@@ -1,0 +1,14 @@
+{
+  "reaction_id": "BGC1000001_m2_to_m3",
+  "domain": [
+    "KS",
+    "AT",
+    "KR"
+  ],
+  "substrate": "malonyl",
+  "stereochem_tag": "KR_unknown",
+  "closure": "",
+  "origin": "iPKS_bacterial",
+  "rule_type": "EXT",
+  "rule_file": "BGC1000001_m2_to_m3__r0.gml"
+}

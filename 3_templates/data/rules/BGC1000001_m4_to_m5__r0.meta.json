@@ -1,0 +1,12 @@
+{
+  "reaction_id": "BGC1000001_m4_to_m5",
+  "domain": [
+    "DH"
+  ],
+  "substrate": "unknown",
+  "stereochem_tag": "unknown",
+  "closure": "PT_OR_TE",
+  "origin": "iPKS_bacterial",
+  "rule_type": "CLOSURE",
+  "rule_file": "BGC1000001_m4_to_m5__r0.gml"
+}
