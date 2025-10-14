@@ -1,0 +1,20 @@
+{
+  "required_domains": [
+    "AT",
+    "DH",
+    "KR",
+    "KS",
+    "PT",
+    "TE"
+  ],
+  "AT_substrates": [
+    "mal"
+  ],
+  "closure": "PT (C2-C7 aldol) + TE (lactonization/release)",
+  "notes": [
+    "bacterial_aromatic_iPKS",
+    "ER_disabled",
+    "hexaketide_core (acetyl + 5\u00d7malonyl)",
+    "PT_mode: C2-C7 (preferred for isocoumarin)"
+  ]
+}

@@ -1,0 +1,113 @@
+{
+  "target": "CC(CC1=CC2=CC(=CC(=C2C(=O)O1)O)O)O",
+  "ranked": [
+    {
+      "bgc_id": "BGC1000006",
+      "tanimoto": 0.12963,
+      "mcs_atoms": 15,
+      "core_smiles": "CC1=C2C=CC(O)=C(C2=CC=C1)C(=O)O",
+      "rules_seq": "BGC1000006_m0_to_m1|BGC1000006_m1_to_m2|BGC1000006_m2_to_m3|BGC1000006_m3_to_m4|BGC1000006_m4_to_m5|BGC1000006_m5_to_m6",
+      "n_ext": 5,
+      "has_kr": true,
+      "has_dh": true,
+      "closure_type": "PT_OR_TE",
+      "at_substrate_set": "mal"
+    },
+    {
+      "bgc_id": "BGC1000002",
+      "tanimoto": 0.096154,
+      "mcs_atoms": 14,
+      "core_smiles": "CC1=C2C=CC=C(C2=CC=C1)C(=O)O",
+      "rules_seq": "BGC1000002_m0_to_m1|BGC1000002_m1_to_m2|BGC1000002_m2_to_m3|BGC1000002_m3_to_m4|BGC1000002_m4_to_m5|BGC1000002_m5_to_m6",
+      "n_ext": 5,
+      "has_kr": true,
+      "has_dh": true,
+      "closure_type": "PT_OR_TE",
+      "at_substrate_set": "mal"
+    },
+    {
+      "bgc_id": "BGC1000000",
+      "tanimoto": 0.564103,
+      "mcs_atoms": 14,
+      "core_smiles": "CC1=CC2=CC(=CC(=C2C(=O)O1)O)O",
+      "rules_seq": "BGC1000000_m0_to_m1|BGC1000000_m1_to_m2|BGC1000000_m2_to_m3|BGC1000000_m3_to_m4|BGC1000000_m4_to_m5",
+      "n_ext": 4,
+      "has_kr": false,
+      "has_dh": true,
+      "closure_type": "PT_OR_TE",
+      "at_substrate_set": "mal"
+    },
+    {
+      "bgc_id": "BGC1000004",
+      "tanimoto": 0.244444,
+      "mcs_atoms": 12,
+      "core_smiles": "CC1=CC(=CC(=C1C(=O)O)O)O",
+      "rules_seq": "BGC1000004_m0_to_m1|BGC1000004_m1_to_m2|BGC1000004_m2_to_m3|BGC1000004_m3_to_m4",
+      "n_ext": 3,
+      "has_kr": false,
+      "has_dh": false,
+      "closure_type": "PT_OR_TE",
+      "at_substrate_set": "mal"
+    },
+    {
+      "bgc_id": "BGC1000007",
+      "tanimoto": 0.244444,
+      "mcs_atoms": 12,
+      "core_smiles": "CC1=CC(=CC(=C1C(=O)O)O)O",
+      "rules_seq": "BGC1000007_m0_to_m1|BGC1000007_m1_to_m2|BGC1000007_m2_to_m3|BGC1000007_m3_to_m4",
+      "n_ext": 3,
+      "has_kr": false,
+      "has_dh": false,
+      "closure_type": "PT_OR_TE",
+      "at_substrate_set": "mal"
+    },
+    {
+      "bgc_id": "BGC1000001",
+      "tanimoto": 0.166667,
+      "mcs_atoms": 13,
+      "core_smiles": "C[C@@H]1CC2=C(C(=CC=C2)O)C(=O)O1",
+      "rules_seq": "BGC1000001_m0_to_m1|BGC1000001_m1_to_m2|BGC1000001_m2_to_m3|BGC1000001_m3_to_m4|BGC1000001_m4_to_m5",
+      "n_ext": 4,
+      "has_kr": true,
+      "has_dh": true,
+      "closure_type": "PT_OR_TE",
+      "at_substrate_set": "mal"
+    },
+    {
+      "bgc_id": "BGC1000003",
+      "tanimoto": 0.142857,
+      "mcs_atoms": 11,
+      "core_smiles": "CC1=C(C(=CC=C1)O)C(=O)O",
+      "rules_seq": "BGC1000003_m0_to_m1|BGC1000003_m1_to_m2|BGC1000003_m2_to_m3|BGC1000003_m3_to_m4",
+      "n_ext": 3,
+      "has_kr": true,
+      "has_dh": false,
+      "closure_type": "PT_OR_TE",
+      "at_substrate_set": "mal"
+    },
+    {
+      "bgc_id": "BGC1000005",
+      "tanimoto": 0.142857,
+      "mcs_atoms": 11,
+      "core_smiles": "CC1=C(C(=CC=C1)O)C(=O)O",
+      "rules_seq": "BGC1000005_m0_to_m1|BGC1000005_m1_to_m2|BGC1000005_m2_to_m3|BGC1000005_m3_to_m4",
+      "n_ext": 3,
+      "has_kr": true,
+      "has_dh": true,
+      "closure_type": "PT_OR_TE",
+      "at_substrate_set": "mal"
+    }
+  ],
+  "top1": {
+    "bgc_id": "BGC1000006",
+    "tanimoto": 0.12963,
+    "mcs_atoms": 15,
+    "core_smiles": "CC1=C2C=CC(O)=C(C2=CC=C1)C(=O)O",
+    "rules_seq": "BGC1000006_m0_to_m1|BGC1000006_m1_to_m2|BGC1000006_m2_to_m3|BGC1000006_m3_to_m4|BGC1000006_m4_to_m5|BGC1000006_m5_to_m6",
+    "n_ext": 5,
+    "has_kr": true,
+    "has_dh": true,
+    "closure_type": "PT_OR_TE",
+    "at_substrate_set": "mal"
+  }
+}

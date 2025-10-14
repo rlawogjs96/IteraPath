@@ -1,0 +1,75 @@
+{
+  "bgc_id": "BGC1000006",
+  "rules_seq": [
+    "BGC1000006_m0_to_m1",
+    "BGC1000006_m1_to_m2",
+    "BGC1000006_m2_to_m3",
+    "BGC1000006_m3_to_m4",
+    "BGC1000006_m4_to_m5",
+    "BGC1000006_m5_to_m6"
+  ],
+  "steps": [
+    {
+      "reaction_id": "BGC1000006_m0_to_m1",
+      "step_type": "EXT",
+      "reactant_smiles": "CC(=O)[S]",
+      "product_smiles": "CC(=O)CC(=O)[S]",
+      "domains": "KS,AT",
+      "at_substrate": "mal"
+    },
+    {
+      "reaction_id": "BGC1000006_m1_to_m2",
+      "step_type": "EXT",
+      "reactant_smiles": "CC(=O)CC(=O)[S]",
+      "product_smiles": "CC(=O)CC(O)CC(=O)[S]",
+      "domains": "KS,AT,KR",
+      "at_substrate": "mal"
+    },
+    {
+      "reaction_id": "BGC1000006_m2_to_m3",
+      "step_type": "EXT",
+      "reactant_smiles": "CC(=O)CC(O)CC(=O)[S]",
+      "product_smiles": "CC(=O)CC(O)CC(=O)CC(=O)[S]",
+      "domains": "KS,AT",
+      "at_substrate": "mal"
+    },
+    {
+      "reaction_id": "BGC1000006_m3_to_m4",
+      "step_type": "EXT",
+      "reactant_smiles": "CC(=O)CC(O)CC(=O)CC(=O)[S]",
+      "product_smiles": "CC(=O)CC(O)CC(=O)CC(O)CC(=O)[S]",
+      "domains": "KS,AT,KR",
+      "at_substrate": "mal"
+    },
+    {
+      "reaction_id": "BGC1000006_m4_to_m5",
+      "step_type": "EXT",
+      "reactant_smiles": "CC(=O)CC(O)CC(=O)CC(O)CC(=O)[S]",
+      "product_smiles": "CC(=O)CC(O)CC(=O)CC(O)CC(=O)CC(=O)[S]",
+      "domains": "KS,AT",
+      "at_substrate": "mal"
+    },
+    {
+      "reaction_id": "BGC1000006_m5_to_m6",
+      "step_type": "CLOSURE",
+      "reactant_smiles": "CC(=O)CC(O)CC(=O)CC(O)CC(=O)CC(=O)[S]",
+      "product_smiles": "CC1=C2C=CC(O)=C(C2=CC=C1)C(=O)O",
+      "domains": "DH",
+      "at_substrate": ""
+    }
+  ],
+  "target": "CC(CC1=CC2=CC(=CC(=C2C(=O)O1)O)O)O",
+  "selector_metrics": {
+    "bgc_id": "BGC1000006",
+    "tanimoto": 0.12963,
+    "mcs_atoms": 15,
+    "core_smiles": "CC1=C2C=CC(O)=C(C2=CC=C1)C(=O)O",
+    "rules_seq": "BGC1000006_m0_to_m1|BGC1000006_m1_to_m2|BGC1000006_m2_to_m3|BGC1000006_m3_to_m4|BGC1000006_m4_to_m5|BGC1000006_m5_to_m6",
+    "n_ext": 5,
+    "has_kr": true,
+    "has_dh": true,
+    "closure_type": "PT_OR_TE",
+    "at_substrate_set": "mal"
+  },
+  "status": "PASS"
+}

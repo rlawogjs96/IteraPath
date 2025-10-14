@@ -1,0 +1,37 @@
+reaction_id,bgc_id,step_type,domains_norm,at_substrate,closure,origin,reactant_smiles,product_smiles,domain,substrate,file_stem,module_from,module_to
+BGC1000000_m0_to_m1,BGC1000000,EXT,"AT,KS",mal,nan,iPKS_bacterial,CC(=O)[S],CC(=O)CC(=O)[S],"['KS', 'AT']",malonyl,BGC1000000_m0_to_m1__r0,0,1
+BGC1000000_m1_to_m2,BGC1000000,EXT,"AT,KS",mal,nan,iPKS_bacterial,CC(=O)CC(=O)[S],CC(=O)CC(=O)CC(=O)[S],"['KS', 'AT']",malonyl,BGC1000000_m1_to_m2__r0,1,2
+BGC1000000_m2_to_m3,BGC1000000,EXT,"AT,KS",mal,nan,iPKS_bacterial,CC(=O)CC(=O)CC(=O)[S],CC(=O)CC(=O)CC(=O)CC(=O)[S],"['KS', 'AT']",malonyl,BGC1000000_m2_to_m3__r0,2,3
+BGC1000000_m3_to_m4,BGC1000000,EXT,"AT,KS",mal,nan,iPKS_bacterial,CC(=O)CC(=O)CC(=O)CC(=O)[S],CC(=O)CC(=O)CC(=O)CC(=O)CC(=O)[S],"['KS', 'AT']",malonyl,BGC1000000_m3_to_m4__r0,3,4
+BGC1000000_m4_to_m5,BGC1000000,CLOSURE,DH,nan,PT_or_TE,iPKS_bacterial,CC(=O)CC(=O)CC(=O)CC(=O)CC(=O)[S],CC1=CC2=CC(=CC(=C2C(=O)O1)O)O,['DH'],unknown,BGC1000000_m4_to_m5__r0,4,5
+BGC1000001_m0_to_m1,BGC1000001,EXT,"AT,KR,KS",mal,nan,iPKS_bacterial,CC(=O)[S],CC(O)CC(=O)[S],"['KS', 'AT', 'KR']",malonyl,BGC1000001_m0_to_m1__r0,0,1
+BGC1000001_m1_to_m2,BGC1000001,EXT,"AT,KS",mal,nan,iPKS_bacterial,CC(O)CC(=O)[S],CC(O)CC(=O)CC(=O)[S],"['KS', 'AT']",malonyl,BGC1000001_m1_to_m2__r0,1,2
+BGC1000001_m2_to_m3,BGC1000001,EXT,"AT,KR,KS",mal,nan,iPKS_bacterial,CC(O)CC(=O)CC(=O)[S],CC(O)CC(=O)CC(O)CC(=O)[S],"['KS', 'AT', 'KR']",malonyl,BGC1000001_m2_to_m3__r0,2,3
+BGC1000001_m3_to_m4,BGC1000001,EXT,"AT,KS",mal,nan,iPKS_bacterial,CC(O)CC(=O)CC(O)CC(=O)[S],CC(O)CC(=O)CC(O)CC(=O)CC(=O)[S],"['KS', 'AT']",malonyl,BGC1000001_m3_to_m4__r0,3,4
+BGC1000001_m4_to_m5,BGC1000001,CLOSURE,DH,nan,PT_or_TE,iPKS_bacterial,CC(O)CC(=O)CC(O)CC(=O)CC(=O)[S],C[C@@H]1CC2=C(C(=CC=C2)O)C(=O)O1,['DH'],unknown,BGC1000001_m4_to_m5__r0,4,5
+BGC1000002_m0_to_m1,BGC1000002,EXT,"AT,KS",mal,nan,iPKS_bacterial,CC(=O)[S],CC(=O)CC(=O)[S],"['KS', 'AT']",malonyl,BGC1000002_m0_to_m1__r0,0,1
+BGC1000002_m1_to_m2,BGC1000002,EXT,"AT,KR,KS",mal,nan,iPKS_bacterial,CC(=O)CC(=O)[S],CC(=O)CC(O)CC(=O)[S],"['KS', 'AT', 'KR']",malonyl,BGC1000002_m1_to_m2__r0,1,2
+BGC1000002_m2_to_m3,BGC1000002,EXT,"AT,KS",mal,nan,iPKS_bacterial,CC(=O)CC(O)CC(=O)[S],CC(=O)CC(O)CC(=O)CC(=O)[S],"['KS', 'AT']",malonyl,BGC1000002_m2_to_m3__r0,2,3
+BGC1000002_m3_to_m4,BGC1000002,EXT,"AT,KR,KS",mal,nan,iPKS_bacterial,CC(=O)CC(O)CC(=O)CC(=O)[S],CC(=O)CC(O)CC(=O)CC(O)CC(=O)[S],"['KS', 'AT', 'KR']",malonyl,BGC1000002_m3_to_m4__r0,3,4
+BGC1000002_m4_to_m5,BGC1000002,EXT,"AT,KR,KS",mal,nan,iPKS_bacterial,CC(=O)CC(O)CC(=O)CC(O)CC(=O)[S],CC(=O)CC(O)CC(=O)CC(O)CC(O)CC(=O)[S],"['KS', 'AT', 'KR']",malonyl,BGC1000002_m4_to_m5__r0,4,5
+BGC1000002_m5_to_m6,BGC1000002,CLOSURE,DH,nan,PT_or_TE,iPKS_bacterial,CC(=O)CC(O)CC(=O)CC(O)CC(O)CC(=O)[S],CC1=C2C=CC=C(C2=CC=C1)C(=O)O,['DH'],unknown,BGC1000002_m5_to_m6__r0,5,6
+BGC1000003_m0_to_m1,BGC1000003,EXT,"AT,KS",mal,nan,iPKS_bacterial,CC(=O)[S],CC(=O)CC(=O)[S],"['KS', 'AT']",malonyl,BGC1000003_m0_to_m1__r0,0,1
+BGC1000003_m1_to_m2,BGC1000003,EXT,"AT,KR,KS",mal,nan,iPKS_bacterial,CC(=O)CC(=O)[S],CC(=O)CC(O)CC(=O)[S],"['KS', 'AT', 'KR']",malonyl,BGC1000003_m1_to_m2__r0,1,2
+BGC1000003_m2_to_m3,BGC1000003,EXT,"AT,KS",mal,nan,iPKS_bacterial,CC(=O)CC(O)CC(=O)[S],CC(=O)CC(O)CC(=O)CC(=O)[S],"['KS', 'AT']",malonyl,BGC1000003_m2_to_m3__r0,2,3
+BGC1000003_m3_to_m4,BGC1000003,CLOSURE,,nan,PT_or_TE,iPKS_bacterial,CC(=O)CC(O)CC(=O)CC(=O)[S],CC1=C(C(=CC=C1)O)C(=O)O,[],unknown,BGC1000003_m3_to_m4__r0,3,4
+BGC1000004_m0_to_m1,BGC1000004,EXT,"AT,KS",mal,nan,iPKS_bacterial,CC(=O)[S],CC(=O)CC(=O)[S],"['KS', 'AT']",malonyl,BGC1000004_m0_to_m1__r0,0,1
+BGC1000004_m1_to_m2,BGC1000004,EXT,"AT,KS",mal,nan,iPKS_bacterial,CC(=O)CC(=O)[S],CC(=O)CC(=O)CC(=O)[S],"['KS', 'AT']",malonyl,BGC1000004_m1_to_m2__r0,1,2
+BGC1000004_m2_to_m3,BGC1000004,EXT,"AT,KS",mal,nan,iPKS_bacterial,CC(=O)CC(=O)CC(=O)[S],CC(=O)CC(=O)CC(=O)CC(=O)[S],"['KS', 'AT']",malonyl,BGC1000004_m2_to_m3__r0,2,3
+BGC1000005_m0_to_m1,BGC1000005,EXT,"AT,KS",mal,nan,iPKS_bacterial,CC(=O)[S],CC(=O)CC(=O)[S],"['KS', 'AT']",malonyl,BGC1000005_m0_to_m1__r0,0,1
+BGC1000005_m1_to_m2,BGC1000005,EXT,"AT,KR,KS",mal,nan,iPKS_bacterial,CC(=O)CC(=O)[S],CC(=O)CC(O)CC(=O)[S],"['KS', 'AT', 'KR']",malonyl,BGC1000005_m1_to_m2__r0,1,2
+BGC1000005_m2_to_m3,BGC1000005,EXT,"AT,KS",mal,nan,iPKS_bacterial,CC(=O)CC(O)CC(=O)[S],CC(=O)CC(O)CC(=O)CC(=O)[S],"['KS', 'AT']",malonyl,BGC1000005_m2_to_m3__r0,2,3
+BGC1000005_m3_to_m4,BGC1000005,CLOSURE,DH,nan,PT_or_TE,iPKS_bacterial,CC(=O)CC(O)CC(=O)CC(=O)[S],CC1=C(C(=CC=C1)O)C(=O)O,['DH'],unknown,BGC1000005_m3_to_m4__r0,3,4
+BGC1000006_m0_to_m1,BGC1000006,EXT,"AT,KS",mal,nan,iPKS_bacterial,CC(=O)[S],CC(=O)CC(=O)[S],"['KS', 'AT']",malonyl,BGC1000006_m0_to_m1__r0,0,1
+BGC1000006_m1_to_m2,BGC1000006,EXT,"AT,KR,KS",mal,nan,iPKS_bacterial,CC(=O)CC(=O)[S],CC(=O)CC(O)CC(=O)[S],"['KS', 'AT', 'KR']",malonyl,BGC1000006_m1_to_m2__r0,1,2
+BGC1000006_m2_to_m3,BGC1000006,EXT,"AT,KS",mal,nan,iPKS_bacterial,CC(=O)CC(O)CC(=O)[S],CC(=O)CC(O)CC(=O)CC(=O)[S],"['KS', 'AT']",malonyl,BGC1000006_m2_to_m3__r0,2,3
+BGC1000006_m3_to_m4,BGC1000006,EXT,"AT,KR,KS",mal,nan,iPKS_bacterial,CC(=O)CC(O)CC(=O)CC(=O)[S],CC(=O)CC(O)CC(=O)CC(O)CC(=O)[S],"['KS', 'AT', 'KR']",malonyl,BGC1000006_m3_to_m4__r0,3,4
+BGC1000006_m4_to_m5,BGC1000006,EXT,"AT,KS",mal,nan,iPKS_bacterial,CC(=O)CC(O)CC(=O)CC(O)CC(=O)[S],CC(=O)CC(O)CC(=O)CC(O)CC(=O)CC(=O)[S],"['KS', 'AT']",malonyl,BGC1000006_m4_to_m5__r0,4,5
+BGC1000006_m5_to_m6,BGC1000006,CLOSURE,DH,nan,PT_or_TE,iPKS_bacterial,CC(=O)CC(O)CC(=O)CC(O)CC(=O)CC(=O)[S],CC1=C2C=CC(O)=C(C2=CC=C1)C(=O)O,['DH'],unknown,BGC1000006_m5_to_m6__r0,5,6
+BGC1000007_m0_to_m1,BGC1000007,EXT,"AT,KS",mal,nan,iPKS_bacterial,CC(=O)[S],CC(=O)CC(=O)[S],"['KS', 'AT']",malonyl,BGC1000007_m0_to_m1__r0,0,1
+BGC1000007_m1_to_m2,BGC1000007,EXT,"AT,KS",mal,nan,iPKS_bacterial,CC(=O)CC(=O)[S],CC(=O)CC(=O)CC(=O)[S],"['KS', 'AT']",malonyl,BGC1000007_m1_to_m2__r0,1,2
+BGC1000007_m2_to_m3,BGC1000007,EXT,"AT,KS",mal,nan,iPKS_bacterial,CC(=O)CC(=O)CC(=O)[S],CC(=O)CC(=O)CC(=O)CC(=O)[S],"['KS', 'AT']",malonyl,BGC1000007_m2_to_m3__r0,2,3
