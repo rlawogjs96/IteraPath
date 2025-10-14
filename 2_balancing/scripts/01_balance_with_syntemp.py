@@ -48,14 +48,14 @@ def augment_by_step(rs: str, ps: str, step: str, at_substrate: str, domains_norm
 
     if s == "EXT":
         if at in ("mal","malonyl","malonyl-acp","malonyl_coa","malonylcoa"):
-            # BioPKS: malonyl-S 축약 = CC(=O)[S]
+            # BioPKS: malonyl-S abbreviation = CC(=O)[S]
             r_mix = f"{rs}.CC(=O)[S]"
-            # KR 동시 존재 시 H2 소비
+            # If KR co-occurs, consume H2
             if kr_here:
                 r_mix = f"{r_mix}.[H][H]"
-            # 생성물 쪽: 캐리어 방출은 [SH]로 (H까지 맞춤)
+            # Product side: carrier release as [SH] (to balance H)
             p_mix = f"{ps}.[SH]"
-            # DH 동시 존재 시 물 방출
+            # If DH co-occurs, release H2O
             if dh_here:
                 p_mix = f"{p_mix}.O"
             why = "EXT(mal): +acetyl-S; " + ("+H2(KR); " if kr_here else "") + ("+H2O(DH); " if dh_here else "") + "release [SH]"
@@ -73,7 +73,7 @@ def augment_by_step(rs: str, ps: str, step: str, at_substrate: str, domains_norm
         return f"{rs}.[H][H]", ps, "ER: +H2 (reactant)"
 
     if s == "CLOSURE":
-        # hydrolysis-like: 물 소비 + [SH] 방출
+        # hydrolysis-like: consume H2O + release [SH]
         return f"{rs}.O", f"{ps}.[SH]", "CLOSURE: +H2O (reactant), release [SH] (product)"
 
     return rs, ps, "OTHER/unknown: no augmentation"

@@ -42,25 +42,25 @@ def main():
         lambda r: f"{r['bgc_id']}_m{r['module_from']}_to_m{r['module_to']}", axis=1
     )
 
-    # domains_norm 없으면 대체
+    # Fallback if domains_norm missing
     if "domains_norm" not in df.columns:
         if "domains" in df.columns:
             df["domains_norm"] = df["domains"].astype(str)
         else:
             df["domains_norm"] = ""
 
-    # closure 컬럼 안전하게 보장 (여기서 .astype 사용은 Series에만)
+    # Safely ensure closure column (astype used only on Series here)
     if "closure" not in df.columns:
         df["closure"] = ""
     else:
         df["closure"] = df["closure"].astype(str)
 
-    # CLOSURE 단계에 placeholder 라벨 부여
+    # Assign placeholder label to CLOSURE steps
     if "step_type" in df.columns:
         mask = (df["step_type"] == "CLOSURE") & (df["closure"].str.len() == 0)
         df.loc[mask, "closure"] = "PT_or_TE"
 
-    # ACP 제거한 도메인
+    # Domains with ACP removed
     df["domains_norm_no_acp"] = df["domains_norm"].map(strip_acp)
 
     df.to_csv(OUTCSV, index=False)

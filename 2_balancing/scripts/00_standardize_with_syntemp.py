@@ -38,7 +38,7 @@ def main():
     df["reactant_smiles_std"] = df["reactant_smiles"].map(stdz)
     df["product_smiles_std"]  = df["product_smiles"].map(stdz)
 
-    # 중복 제거(동일 reaction_id, 표준화된 양 끝이 같으면)
+    # Remove duplicates (same reaction_id, same standardized reactant/product)
     df = df.drop_duplicates(subset=["reaction_id", "reactant_smiles_std", "product_smiles_std"])
 
     df.to_csv(OUTCSV, index=False)

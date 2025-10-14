@@ -2,16 +2,16 @@
 from pathlib import Path
 import pandas as pd
 
-# 입력 경로 (5_planner 루트 기준)
+# Input paths (relative to 5_planner root)
 BALANCED = Path("../2_balancing/data/balanced_only.csv")
 RULEMETA = Path("../4_rulemeta/data/rulemeta.csv")
 OUTBANK  = Path("./data/template_bank.csv")
 
 def load_tables():
-    """입력 파일 로드"""
+    """Load input files"""
     bal = pd.read_csv(BALANCED)
     meta = pd.read_csv(RULEMETA)
-    # reaction_id 문자열화
+    # Convert reaction_id to string
     for df in (bal, meta):
         if "reaction_id" in df.columns:
             df["reaction_id"] = df["reaction_id"].astype(str)
@@ -19,17 +19,17 @@ def load_tables():
 
 def build_bank(bal: pd.DataFrame, meta: pd.DataFrame) -> pd.DataFrame:
     """
-    BGC별 템플릿 뱅크 생성
+    Build template bank per BGC
     
-    각 BGC에 대해:
-    - 최종 코어 SMILES (CLOSURE 단계의 product)
-    - 룰 시퀀스 (reaction_id 리스트)
-    - 메타 요약 (n_ext, has_kr, has_dh, closure_type, at_substrate_set)
+    For each BGC:
+    - Final core SMILES (product of CLOSURE step)
+    - Rule sequence (reaction_id list)
+    - Meta summary (n_ext, has_kr, has_dh, closure_type, at_substrate_set)
     """
-    # balanced_only를 베이스로 시작
+    # Start with balanced_only as base
     ready = bal.copy()
     
-    # rulemeta에서 step_type, closure 정보 병합
+    # Merge step_type, closure info from rulemeta
     if not meta.empty and "reaction_id" in meta.columns:
         meta_cols = ["reaction_id", "step_type", "closure"]
         available_cols = [c for c in meta_cols if c in meta.columns]
@@ -40,25 +40,25 @@ def build_bank(bal: pd.DataFrame, meta: pd.DataFrame) -> pd.DataFrame:
             suffixes=("_bal", "_meta")
         )
         
-        # step_type 통합: _meta 우선 (_bal은 balanced_only에 없을 수 있음)
+        # Unify step_type: _meta takes priority (_bal may not exist in balanced_only)
         if "step_type_meta" in ready.columns:
             ready["step_type"] = ready["step_type_meta"]
         elif "step_type_bal" in ready.columns:
             ready["step_type"] = ready["step_type_bal"]
     
-    # step_type이 없으면 추론
+    # Infer if step_type missing
     if "step_type" not in ready.columns:
         ready["step_type"] = "UNKNOWN"
     
-    # 최종 코어 추출 함수
+    # Extract final core function
     def final_core(dfbgc: pd.DataFrame) -> str:
-        # CLOSURE 단계의 product_smiles 우선
+        # CLOSURE step's product_smiles takes priority
         if "step_type" in dfbgc.columns:
             clo = dfbgc[dfbgc["step_type"] == "CLOSURE"]
             if not clo.empty and "product_smiles" in clo.columns:
                 sorted_clo = clo.sort_values(["module_from", "module_to"], na_position='last')
                 return sorted_clo.iloc[-1]["product_smiles"]
-        # fallback: BGC 내 마지막 product_smiles
+        # fallback: last product_smiles in BGC
         if "module_from" in dfbgc.columns and "module_to" in dfbgc.columns:
             sorted_bgc = dfbgc.sort_values(["module_from", "module_to"], na_position='last')
         else:
@@ -69,10 +69,10 @@ def build_bank(bal: pd.DataFrame, meta: pd.DataFrame) -> pd.DataFrame:
     for bgc, dfb in ready.groupby("bgc_id"):
         dfb = dfb.sort_values(["module_from", "module_to"], na_position='last').reset_index(drop=True)
         
-        # 최종 코어 SMILES
+        # Final core SMILES
         core = final_core(dfb)
         
-        # 룰 시퀀스
+        # Rule sequence
         rules_seq = dfb["reaction_id"].astype(str).tolist()
         
         # AT substrate set
@@ -81,23 +81,23 @@ def build_bank(bal: pd.DataFrame, meta: pd.DataFrame) -> pd.DataFrame:
             at_set = sorted(set(dfb["at_substrate"].dropna().astype(str).tolist()))
             at_set = [x for x in at_set if x and x.lower() not in ['nan', 'none', '']]
         
-        # EXT 개수 (디버깅 강화)
+        # EXT count (enhanced debugging)
         n_ext = 0
         if "step_type" in dfb.columns:
             ext_mask = (dfb["step_type"] == "EXT")
             n_ext = int(ext_mask.sum())
-            # 디버깅: step_type이 모두 NaN/UNKNOWN인 경우 대비
+            # Debugging: fallback if all step_type are NaN/UNKNOWN
             if n_ext == 0:
-                # rules_seq 길이에서 CLOSURE 1개 빼기로 추정
+                # Estimate: rules_seq length minus 1 CLOSURE
                 total_steps = len(dfb)
                 closure_count = int((dfb["step_type"] == "CLOSURE").sum())
                 if closure_count > 0:
                     n_ext = total_steps - closure_count
                 else:
-                    # 최후의 fallback: 전체 스텝 - 1
+                    # Last resort fallback: total steps - 1
                     n_ext = max(0, total_steps - 1)
         
-        # KR/DH 존재 여부
+        # Check KR/DH presence
         has_kr = False
         has_dh = False
         if "domains" in dfb.columns:

@@ -23,7 +23,7 @@ def main():
     mask = df["reactant_smiles"].astype(str).str.len().gt(0) & df["product_smiles"].astype(str).str.len().gt(0)
     keep = df[mask].copy()
 
-    # recommended: keep only known step_types (EXT/KR/DH/CLOSURE). OTHER는 제외
+    # recommended: keep only known step_types (EXT/KR/DH/CLOSURE). Exclude OTHER
     allowed = {"EXT","KR","DH","CLOSURE"}
     keep = keep[keep["step_type"].isin(allowed)].copy()
 

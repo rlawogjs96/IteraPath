@@ -12,8 +12,8 @@ OUT_CSV  = Path("../data/balance_debug_formulas.csv")
 MALONYL_THIO = "CC(=O)[S]"
 H2   = "[H][H]"
 H2O  = "O"
-# CLOSURE/EXT에서 방출되는 thiol은 BioPKS 표기 그대로 [S]로 둔다.
-# 필요시 [SH]로 바꾸어 H 밸런스 확인 가능.
+# Thiol released in CLOSURE/EXT is kept as [S] per BioPKS notation.
+# Can change to [SH] if needed to verify H balance.
 
 def augment_by_step(rs: str, ps: str, step: str, at_substrate: str):
     s  = (step or "").upper()
@@ -21,9 +21,9 @@ def augment_by_step(rs: str, ps: str, step: str, at_substrate: str):
 
     if s == "EXT":
         if at in ("mal","malonyl","malonyl-acp","malonyl_coa","malonylcoa"):
-            # BioPKS 컨벤션 가정: +acetyl-S, 캐리어 thiol 방출
+            # BioPKS convention assumption: +acetyl-S, release carrier thiol
             r_mix = f"{rs}.{MALONYL_THIO}"
-            p_mix = f"{ps}.[S]"           # ← 필요시 "[SH]"로 바꿔 H 영향 확인
+            p_mix = f"{ps}.[S]"           # ← Can change to "[SH]" to check H impact
             why   = "EXT(mal): +acetyl-S (BioPKS), +[S] on product"
             return r_mix, p_mix, why
         else:
@@ -87,9 +87,9 @@ def main():
         r_mix, p_mix, why = augment_by_step(rs, ps, step, at)
         rsmi = f"{r_mix}>>{p_mix}"
 
-        # 공식 함수가 true/false만 주므로, 합계식은 직접 계산해서 기록
+        # Official function only returns true/false, so we calculate formulas ourselves for recording
         L, R = split_lr(rsmi)
-        fL = get_combined_molecular_formula(L)   # 예: "C4H6O2S2"
+        fL = get_combined_molecular_formula(L)   # e.g.: "C4H6O2S2"
         fR = get_combined_molecular_formula(R)
 
         dL = to_dict(fL); dR = to_dict(fR)
@@ -104,7 +104,7 @@ def main():
             "reactions": rsmi,
             "f_left": fL,
             "f_right": fR,
-            "diff": diff,          # 어떤 원소가 얼마나 차이나는지
+            "diff": diff,          # Which elements differ and by how much
             "balanced": bool(ok),
             "augmentation": why
         })
@@ -113,7 +113,7 @@ def main():
     OUT_CSV.parent.mkdir(parents=True, exist_ok=True)
     out.to_csv(OUT_CSV, index=False)
     print(f"[OK] wrote {OUT_CSV} (rows={len(out)})")
-    # 유용한 팁: 맨 앞 5개 diff를 확인해 보세요.
+    # Useful tip: check the first 5 diffs.
 
 if __name__ == "__main__":
     main()

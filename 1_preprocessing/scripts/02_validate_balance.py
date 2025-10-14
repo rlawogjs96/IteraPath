@@ -16,7 +16,7 @@ What it checks:
       * DH step: domains has DH  (optional)
       * CLOSURE candidate: product has NO "[S]"   (PT/TE class; not deciding C2–C7 vs TE yet)
 Notes:
-  - RDKit 없는 환경도 동작 (원소/질량 밸런스는 이후 단계에서 상세 검증)
+  - Works without RDKit (detailed elemental/mass balance validation done in later steps)
 """
 
 import csv
@@ -35,9 +35,9 @@ def norm_domains(cell: str):
     out = []
     for t in toks:
         u = t.upper()
-        if u in {"", "ACP"}:  # ACP는 제외
+        if u in {"", "ACP"}:  # Exclude ACP
             continue
-        # 간단 별칭
+        # Simple aliases
         if u in {"THIOESTERASE"}: u = "TE"
         if u in {"PRODUCTTEMPLATE", "PTDOMAIN", "PTD"}: u = "PT"
         if u in {"KETOREDUCTASE"}: u = "KR"
@@ -46,7 +46,7 @@ def norm_domains(cell: str):
         if u in {"BETA-KETOACYLSYNTHASE", "KSQ"}: u = "KS"
         if u in {"ACYLTRANSFERASE"}: u = "AT"
         out.append(u)
-    # dedup + 안정적 순서
+    # Dedup + stable order
     seen, uniq = set(), []
     for u in out:
         if u and u not in seen:
@@ -54,7 +54,7 @@ def norm_domains(cell: str):
     return ",".join(uniq)
 
 def has_thioester(smiles: str) -> bool:
-    # 매우 단순 휴리스틱: "[S]" 토큰 유무로 판단 (ACP/CoA 표기 관례를 그대로 활용)
+    # Very simple heuristic: check for "[S]" token (leverages ACP/CoA notation convention)
     return isinstance(smiles, str) and "[S]" in smiles
 
 def main():
@@ -63,41 +63,41 @@ def main():
 
     df = pd.read_csv(INCSV, dtype=str, keep_default_na=False)
 
-    # 정규화
+    # Normalize
     for c in ["reactant_smiles","product_smiles","domains","at_substrate","kr_annotation","dh_annotation","er_annotation","te_annotation"]:
         if c not in df.columns: df[c] = ""
         df[c] = df[c].astype(str).str.strip()
 
-    # 도메인 정리 (ACP 제거)
+    # Clean domains (remove ACP)
     df["domains_norm"] = df["domains"].map(norm_domains)
 
-    # 티오에스터 플래그
+    # Thioester flags
     df["reactant_has_thio"] = df["reactant_smiles"].map(has_thioester)
     df["product_has_thio"]  = df["product_smiles"].map(has_thioester)
 
-    # 스텝 타입 휴리스틱
+    # Step type heuristics
     def infer_step(row):
         doms = set([d for d in row["domains_norm"].split(",") if d])
         r_thio = row["reactant_has_thio"]; p_thio = row["product_has_thio"]
         at = (("KS" in doms) and ("AT" in doms))
         kr = ("KR" in doms)
         dh = ("DH" in doms)
-        # 규칙
-        if not p_thio:         # 제품에 thioester가 없으면 방출/폐환 계열
+        # Rules
+        if not p_thio:         # If product has no thioester, it's release/cyclization
             return "CLOSURE"
         if at and r_thio and p_thio:
-            # 연장(EXT) 단계로 해석
+            # Interpreted as extension (EXT) step
             return "EXT"
         if kr and r_thio and p_thio:
             return "KR"
         if dh and r_thio and p_thio:
             return "DH"
-        # 기타는 보류
+        # Other cases deferred
         return "OTHER"
 
     df["step_type"] = df.apply(infer_step, axis=1)
 
-    # 간단 QC 집계
+    # Simple QC aggregation
     total = len(df)
     n_ext = (df["step_type"]=="EXT").sum()
     n_clo = (df["step_type"]=="CLOSURE").sum()
@@ -105,7 +105,7 @@ def main():
     n_dh  = (df["step_type"]=="DH").sum()
     n_other = (df["step_type"]=="OTHER").sum()
 
-    # 도메인-스텝 상충 검출 (예: domains가 DH인데 CLOSURE로 나오는 경우 등)
+    # Detect domain-step conflicts (e.g., domains has DH but step_type is CLOSURE, etc.)
     conflicts = []
     for i, r in df.iterrows():
         doms = set([d for d in r["domains_norm"].split(",") if d])
@@ -117,14 +117,14 @@ def main():
         if st=="DH" and "DH" not in doms:
             conflicts.append((i, "DH but DH not in domains"))
         if st=="CLOSURE" and (("KS" in doms) or ("AT" in doms)):
-            # 폐환인데 KS/AT만 있는 케이스는 의심: PT/TE 누락 가능성
+            # Suspect case: CLOSURE but only KS/AT present - possible PT/TE omission
             conflicts.append((i, "CLOSURE but domains lack PT/TE flag (suspect PT/TE)"))
 
-    # 출력 저장
+    # Save output
     OUTCSV.parent.mkdir(parents=True, exist_ok=True)
     df.to_csv(OUTCSV, index=False, quoting=csv.QUOTE_MINIMAL)
 
-    # QC 리포트
+    # QC report
     lines = []
     lines.append("# Reactions QC Report\n")
     lines.append(f"- Total: {total}")

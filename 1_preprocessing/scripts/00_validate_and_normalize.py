@@ -20,14 +20,14 @@ OUT_CSV = Path("../data/iPKS_rxn.cleaned.csv")
 OUT_QC  = Path("../data/qc_report.md")
 
 # Column aliases -> canonical names
-# (필요시 여기에 별칭을 계속 추가해도 됨)
+# (Add more aliases here as needed)
 ALIAS = {
     "bgc": "bgc_id", "bgc_id": "bgc_id", "bgc accession": "bgc_id",
 
     "reaction_id": "reaction_id", "rxn_id": "reaction_id",
-    "step_idx": "step_idx",                 # 이미 step_idx로 들어온 경우 유지
-    "module_num": "step_idx",               # ★ 숫자 인덱스는 step_idx로
-    "module": "module_name",                # ★ 모듈 '이름'은 module_name으로
+    "step_idx": "step_idx",                 # Keep as step_idx if already present
+    "module_num": "step_idx",               # ★ Numeric index maps to step_idx
+    "module": "module_name",                # ★ Module 'name' maps to module_name
 
     "reactant": "reactant_smiles", "reactant_smiles": "reactant_smiles", "substrate_smiles": "reactant_smiles",
     "product": "product_smiles", "product_smiles": "product_smiles",
@@ -42,7 +42,7 @@ ALIAS = {
 }
 
 
-# Canonical column order (없어도 진행되지만, 가능하면 맞추자)
+# Canonical column order 
 CANON = [
     "bgc_id", "reaction_id", "step_idx", "module_name",
     "reactant_smiles", "product_smiles",
@@ -78,7 +78,7 @@ def normalize_domains(cell: str):
     for t in toks:
         u = t.upper().strip()
         # quick aliasing
-        if u in {"ACP"}: continue  # carrier는 제외
+        if u in {"ACP"}: continue  # exclude carrier
         if u in {"THIOESTERASE"}: u = "TE"
         if u in {"PRODUCTTEMPLATE","PTD","PT_DOMAIN"}: u = "PT"
         if u in {"KETOREDUCTASE"}: u = "KR"

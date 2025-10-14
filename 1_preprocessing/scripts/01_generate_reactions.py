@@ -19,7 +19,7 @@ def main():
     col_mod = "step_idx" if "step_idx" in df.columns else "module_num"
     col_mid = "intermediate_smiles" if "intermediate_smiles" in df.columns else "smiles"
     
-    # 정렬
+    # Sort
     df[col_mod] = df[col_mod].astype(int)
     df = df.sort_values([col_id, col_mod])
     

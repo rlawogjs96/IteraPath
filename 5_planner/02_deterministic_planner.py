@@ -3,7 +3,7 @@ from pathlib import Path
 import json
 import pandas as pd
 
-# 입력/출력 경로 (5_planner 루트 기준)
+# Input/output paths (relative to 5_planner root)
 SELECTOR = Path("./data/selector_out.json")
 BALANCED = Path("../2_balancing/data/balanced_only.csv")
 RULEMETA = Path("../4_rulemeta/data/rulemeta.csv")
@@ -13,12 +13,12 @@ OUT_ROUTE= OUTDIR / "route.json"
 OUT_GENE = OUTDIR / "gene_spec.json"
 OUT_AUD  = OUTDIR / "audit.md"
 
-# 게이트 설정
+# Gate settings
 ALLOWED_AT = {"mal", "malonyl"}
 DISABLE_ER = True
 
 def load_inputs():
-    """입력 파일 로드"""
+    """Load input files"""
     with open(SELECTOR) as f:
         sel = json.load(f)
     
@@ -33,13 +33,13 @@ def load_inputs():
 
 def enforce_gates(dfb: pd.DataFrame, meta: pd.DataFrame):
     """
-    게이트 검사 및 유전자 사양 생성
+    Gate validation and gene specification generation
     
-    게이트:
-    1. ER 금지 (bacterial aromatic iPKS)
-    2. EXT: KS+AT 필수, AT=mal 검증
-    3. CLOSURE: closure 메타 존재 여부
-    4. (선택) balanced flag 체크
+    Gates:
+    1. ER prohibited (bacterial aromatic iPKS)
+    2. EXT: KS+AT required, AT=mal verification
+    3. CLOSURE: closure metadata presence check
+    4. (Optional) balanced flag check
     
     Returns:
         (ok: bool, logs: list, gene_spec: dict or None)
@@ -50,7 +50,7 @@ def enforce_gates(dfb: pd.DataFrame, meta: pd.DataFrame):
     pt_present = False
     te_present = False
     
-    # 메타데이터 병합
+    # Merge metadata
     df = dfb.merge(
         meta.drop_duplicates("reaction_id"),
         on="reaction_id",
@@ -58,7 +58,7 @@ def enforce_gates(dfb: pd.DataFrame, meta: pd.DataFrame):
         suffixes=("", "_meta")
     )
     
-    # module_from, module_to로 정렬
+    # Sort by module_from, module_to
     sort_cols = []
     if "module_from" in df.columns:
         sort_cols.append("module_from")
@@ -68,7 +68,7 @@ def enforce_gates(dfb: pd.DataFrame, meta: pd.DataFrame):
     if sort_cols:
         df = df.sort_values(sort_cols, na_position='last').reset_index(drop=True)
     
-    # 각 반응 검사
+    # Check each reaction
     for i, row in df.iterrows():
         rid = row["reaction_id"]
         step = row.get("step_type") or row.get("step_type_meta") or "UNKNOWN"
@@ -76,12 +76,12 @@ def enforce_gates(dfb: pd.DataFrame, meta: pd.DataFrame):
         at_sub = str(row.get("at_substrate") or row.get("at_substrate_meta") or "").lower().strip()
         closure = str(row.get("closure") or row.get("closure_meta") or "")
         
-        # ER 금지
+        # ER prohibition
         if DISABLE_ER and "ER" in domains.upper():
             logs.append(f"[FAIL] {rid}: ER domain found (domains={domains})")
             return False, logs, None
         
-        # EXT 게이트
+        # EXT gate
         if step == "EXT":
             if "KS" not in domains.upper() or "AT" not in domains.upper():
                 logs.append(f"[FAIL] {rid}: EXT without KS+AT (domains={domains})")
@@ -95,13 +95,13 @@ def enforce_gates(dfb: pd.DataFrame, meta: pd.DataFrame):
             if at_sub:
                 at_used.add(at_sub)
         
-        # 환원 게이트 (약식)
+        # Reduction gate (simplified)
         if "KR" in domains.upper():
             gene_domains.add("KR")
         if "DH" in domains.upper():
             gene_domains.add("DH")
         
-        # 종결 게이트
+        # Termination gate
         if step == "CLOSURE":
             if not closure or closure.lower() in ["nan", "none", ""]:
                 logs.append(f"[FAIL] {rid}: CLOSURE without closure metadata")
@@ -115,7 +115,7 @@ def enforce_gates(dfb: pd.DataFrame, meta: pd.DataFrame):
                 te_present = True
                 gene_domains.add("TE")
         
-        # (선택) balanced flag 체크
+        # (Optional) balanced flag check
         if "balanced" in df.columns:
             b = row.get("balanced")
             if pd.notna(b) and str(b).lower() == "false":
@@ -123,11 +123,11 @@ def enforce_gates(dfb: pd.DataFrame, meta: pd.DataFrame):
         
         logs.append(f"[OK] {rid}: step={step}, domains={domains or '-'}, at={at_sub or '-'}, closure={closure or '-'}")
     
-    # 최종 sanity
+    # Final sanity check
     if not pt_present and not te_present:
         logs.append("[WARN] No PT/TE observed in pathway (check CLOSURE rules)")
     
-    # 유전자 사양 생성
+    # Generate gene specification
     gene_spec = {
         "required_domains": sorted(gene_domains),
         "AT_substrates": sorted(at_used) if at_used else ["mal"],
@@ -146,7 +146,7 @@ def main():
     print("[START] Deterministic planner...")
     OUTDIR.mkdir(parents=True, exist_ok=True)
     
-    # 입력 로드
+    # Load inputs
     sel, bal, meta = load_inputs()
     
     if not sel.get("top1"):
@@ -155,18 +155,18 @@ def main():
     chosen = sel["top1"]["bgc_id"]
     print(f"[INFO] Selected BGC: {chosen}")
     
-    # 선택된 BGC 경로 필터
+    # Filter selected BGC pathway
     dfb = bal[bal["bgc_id"] == chosen].copy()
     if dfb.empty:
         raise RuntimeError(f"No records for bgc_id={chosen} in balanced_only.csv")
     
     print(f"[INFO] Found {len(dfb)} reactions for {chosen}")
     
-    # 게이트 검사
+    # Gate validation
     ok, logs, gene_spec = enforce_gates(dfb, meta)
     
-    # ▼▼▼ 추가: EXT×5 강제 & PT 강제 ▼▼▼
-    # 정렬 (route 출력과 동일한 기준)
+    # ▼▼▼ Added: Force EXT×5 & PT ▼▼▼
+    # Sort (same criteria as route output)
     sort_cols = []
     if "module_from" in dfb.columns:
         sort_cols.append("module_from")
@@ -178,7 +178,7 @@ def main():
     else:
         dfb_sorted = dfb.copy()
     
-    # EXT 횟수 강제 (Orthosporin: hexaketide = acetyl + 5×malonyl)
+    # Force EXT count (Orthosporin: hexaketide = acetyl + 5×malonyl)
     force_n_ext = 5
     ext_count = 0
     if "step_type" in dfb_sorted.columns:
@@ -190,11 +190,11 @@ def main():
     else:
         logs.append(f"[OK] EXT count {ext_count} >= required {force_n_ext}")
     
-    # PT 강제 (C2-C7 aldol cyclization for isocoumarin)
+    # Force PT (C2-C7 aldol cyclization for isocoumarin)
     has_pt = False
     if "closure" in dfb_sorted.columns:
         has_pt = dfb_sorted["closure"].fillna("").astype(str).str.upper().str.contains("PT").any()
-    # Fallback: domains에서도 찾기
+    # Fallback: also check domains
     if not has_pt and "domains" in dfb_sorted.columns:
         has_pt = dfb_sorted["domains"].fillna("").astype(str).str.upper().str.contains("PT").any()
     
@@ -203,9 +203,9 @@ def main():
         logs.append("[FAIL] PT not found in pathway (PT required for isocoumarin C2-C7 closure)")
     else:
         logs.append("[OK] PT present (C2-C7 aldol cyclization assumed; TE co-occurs for release)")
-    # ▲▲▲ 추가 끝 ▲▲▲
+    # ▲▲▲ End of additions ▲▲▲
     
-    # route.json 생성
+    # Generate route.json
     sort_cols = []
     if "module_from" in dfb.columns:
         sort_cols.append("module_from")
@@ -215,7 +215,7 @@ def main():
     if sort_cols:
         dfb = dfb.sort_values(sort_cols, na_position='last')
     
-    # 출력할 컬럼 선택
+    # Select columns to output
     step_cols = ["reaction_id"]
     for c in ["step_type", "reactant_smiles", "product_smiles", "domains", "at_substrate"]:
         if c in dfb.columns:
@@ -233,12 +233,12 @@ def main():
     with open(OUT_ROUTE, "w") as f:
         json.dump(route, f, indent=2)
     
-    # gene_spec.json 생성
+    # Generate gene_spec.json
     if gene_spec:
         with open(OUT_GENE, "w") as f:
             json.dump(gene_spec, f, indent=2)
     
-    # audit.md 생성
+    # Generate audit.md
     with open(OUT_AUD, "w", encoding="utf-8") as f:
         f.write("# Deterministic Planner Audit\n\n")
         f.write(f"- Selected BGC: {chosen}\n")
