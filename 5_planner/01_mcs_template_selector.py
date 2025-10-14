@@ -43,6 +43,30 @@ def score_pair(target_mol, core_mol):
     
     return tanim, mcs_atoms
 
+# ========== Hybrid Scoring System ==========
+required_n_ext = 5
+W_TANIMOTO = 0.6
+W_MCS = 0.4
+
+def normalize_mcs_ratio(mcs_atoms: int, target_num_atoms: int) -> float:
+    """Normalize MCS atoms to [0, 1] ratio"""
+    if target_num_atoms <= 0:
+        return 0.0
+    return max(0.0, min(1.0, mcs_atoms / float(target_num_atoms)))
+
+def score_template(rec: dict, target_num_atoms: int) -> float:
+    """
+    Hybrid scoring: n_ext match (priority) + weighted Tanimoto + MCS ratio
+    
+    - n_ext match: +10.0 bonus (highest priority)
+    - Tanimoto: 0.6 weight
+    - MCS ratio: 0.4 weight
+    """
+    n_ext_score = 10.0 if int(rec.get("n_ext", 0)) == required_n_ext else 0.0
+    tani = float(rec.get("tanimoto", 0.0))
+    mcs_ratio = normalize_mcs_ratio(int(rec.get("mcs_atoms", 0)), target_num_atoms)
+    return n_ext_score + (W_TANIMOTO * tani) + (W_MCS * mcs_ratio)
+
 def main():
     print("[START] MCS template selector...")
     
@@ -82,15 +106,13 @@ def main():
     if not results:
         raise RuntimeError("No valid BGC cores found in template bank")
     
-    # Deterministic sorting: n_ext>=5 highest priority, then (-tanimoto, -mcs_atoms, bgc_id)
-    # Prioritize n_ext>=5 candidates for hexaketide targets like Orthosporin
-    required_n_ext = 5
-    results.sort(key=lambda x: (
-        0 if x["n_ext"] >= required_n_ext else 1,  # n_ext>=5 first
-        -x["tanimoto"],
-        -x["mcs_atoms"],
-        x["bgc_id"]
-    ))
+    # Hybrid scoring: n_ext match as hard priority, then weighted Tanimoto + MCS
+    target_atoms = tmol.GetNumAtoms()
+    for r in results:
+        r["hybrid_score"] = score_template(r, target_atoms)
+    
+    # Sort by hybrid_score (descending), then bgc_id (deterministic tie-break)
+    results.sort(key=lambda x: (-x["hybrid_score"], x["bgc_id"]))
     
     # Output
     OUTJS.parent.mkdir(parents=True, exist_ok=True)
@@ -106,7 +128,7 @@ def main():
     print(f"[DONE] Selector out written: {OUTJS}")
     if results:
         top = results[0]
-        print(f"       Top-1: {top['bgc_id']} | Tanimoto={top['tanimoto']:.4f} | MCS_atoms={top['mcs_atoms']}")
+        print(f"       Top-1: {top['bgc_id']} | Hybrid_score={top['hybrid_score']:.4f} | Tanimoto={top['tanimoto']:.4f} | MCS_atoms={top['mcs_atoms']}")
 
 if __name__ == "__main__":
     main()

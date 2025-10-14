@@ -4,6 +4,13 @@ Mechanistic, deterministic rule-based design toolkit for iterative PKS (iPKS) co
 
 Select a template BGC via structure similarity (MCS/Tanimoto), then replay & plan the biosynthesis using SynTemp/SynKit-style reaction rules (AAM → ITS → Rule/GML). Supports target-specific constraints (e.g., `required_n_ext=5`, `pt_mode=c2c7`, ER disabled) to guarantee carbon accounting and closure logic.
 
+> **⚠️ Important Distinction**  
+> This toolkit uses **NR-PKS (non-reducing PKS)** rules, likely of **fungal origin**, featuring PT domains for C2-C7 aldol cyclization.  
+> - **Bacterial production** (heterologous expression in _Streptomyces_, _E. coli_) ✅ Feasible  
+> - **Bacterial Type I iterative PKS** (without PT domain) ❌ Insufficient for aromatic cores  
+> 
+> The current dataset (`iPKS_rxn.csv`) contains PT-bearing systems that enable isocoumarin/tetralone scaffolds.
+
 ---
 
 ## Key features
@@ -204,6 +211,31 @@ Acetyl + 5× Malonyl (AT=mal)
 - [ ] **Multi-objective template scoring**: balance n_ext match, Tanimoto, MCS ratio, domain fit
 - [ ] **SynKit migration**: replace deprecated SynTemp modules; keep the same interfaces
 - [ ] **Tailoring rule library**: common P450/MT glycosyl/O-methyl extra steps
+
+---
+
+## ⚡ Key Conclusions
+
+### What This Toolkit Does ✅
+- **Designs NR-PKS pathways** for aromatic polyketides (isocoumarin, tetralone)
+- **Uses PT domain rules** for C2-C7 aldol cyclization (fungal-like mechanism)
+- **Generates gene specs** for heterologous expression in bacterial hosts
+- **Validates mechanistic correctness** (carbon accounting, domain logic)
+
+### What It Does NOT Do ❌
+- **Does not use bacterial Type I iterative PKS alone** (lacks PT domain for aromatic closure)
+- **Does not claim "bacterial iPKS-only" synthesis** of complex aromatics
+- **PT domain is essential** — this is the mechanistic requirement for isocoumarin cores
+
+### Production Strategy 🔬
+```
+NR-PKS core (fungal-type, PT domain)
+  → Heterologous expression in bacterial host (Streptomyces/E. coli)
+    → Tailoring enzymes (P450, MT)
+      → Target molecule (e.g., Orthosporin)
+```
+
+**Bottom Line**: This is a **bacterial production platform** using **NR-PKS biosynthetic logic**, not a purely bacterial Type I iPKS system.
 
 ---
 

@@ -12,10 +12,8 @@ OUTDIR   = Path("../cases/orthosporin")
 OUT_ROUTE= OUTDIR / "route.json"
 OUT_GENE = OUTDIR / "gene_spec.json"
 OUT_AUD  = OUTDIR / "audit.md"
-
-# Gate settings
-ALLOWED_AT = {"mal", "malonyl"}
-DISABLE_ER = True
+CONSTRAINTS = OUTDIR / "constraints.json"
+CONSTRAINTS_FREEZE = OUTDIR / "constraints.freeze.json"
 
 def load_inputs():
     """Load input files"""
@@ -31,19 +29,76 @@ def load_inputs():
     
     return sel, bal, meta
 
-def enforce_gates(dfb: pd.DataFrame, meta: pd.DataFrame):
+def load_constraints():
+    """
+    Load constraints from constraints.json
+    Saves a frozen copy for reproducibility
+    """
+    if CONSTRAINTS.exists():
+        with open(CONSTRAINTS, encoding="utf-8") as f:
+            c = json.load(f)
+        print(f"[INFO] Loaded constraints from {CONSTRAINTS}")
+    else:
+        # Default constraints (Orthosporin)
+        c = {
+            "target": {
+                "name": "Orthosporin",
+                "smiles": "CC(CC1=CC2=CC(=CC(=C2C(=O)O1)O)O)O"
+            },
+            "core_pathway": {
+                "pks_type": "I_NR",
+                "starter_unit": "acetyl-CoA",
+                "at_substrate": "mal|malonyl",
+                "required_n_ext": 5,
+                "er_allowed": False,
+                "kr_mode": "late_or_once",
+                "dh": "optional"
+            },
+            "closure": {
+                "require_pt": True,
+                "pt_mode_allowed": ["c2c7"],
+                "release": "TE_lactonization"
+            },
+            "tailoring": {
+                "steps": []
+            }
+        }
+        print("[INFO] Using default constraints (no constraints.json found)")
+    
+    # Save frozen copy for reproducibility
+    with open(CONSTRAINTS_FREEZE, "w", encoding="utf-8") as fz:
+        json.dump(c, fz, indent=2, ensure_ascii=False)
+    print(f"[INFO] Saved frozen constraints to {CONSTRAINTS_FREEZE}")
+    
+    return c
+
+def enforce_gates(dfb: pd.DataFrame, meta: pd.DataFrame, constraints: dict):
     """
     Gate validation and gene specification generation
     
-    Gates:
-    1. ER prohibited (bacterial aromatic iPKS)
-    2. EXT: KS+AT required, AT=mal verification
-    3. CLOSURE: closure metadata presence check
-    4. (Optional) balanced flag check
+    Uses constraints to determine:
+    - allowed AT substrates
+    - ER allowed/prohibited
+    - required n_ext
+    - PT/TE requirements
     
     Returns:
         (ok: bool, logs: list, gene_spec: dict or None)
     """
+    # Extract constraints
+    core = constraints.get("core_pathway", {})
+    closure_spec = constraints.get("closure", {})
+    tailoring = constraints.get("tailoring", {}).get("steps", [])
+    
+    # Parse constraints
+    at_substrate_raw = core.get("at_substrate", "mal")
+    allowed_at = set(at_substrate_raw.split("|"))
+    er_allowed = bool(core.get("er_allowed", False))
+    kr_mode = core.get("kr_mode", "late_or_once")
+    dh_state = core.get("dh", "optional")
+    pt_mode_list = closure_spec.get("pt_mode_allowed", ["c2c7"])
+    release_type = closure_spec.get("release", "TE_lactonization")
+    
     logs = []
     gene_domains = set()
     at_used = set()
@@ -76,9 +131,9 @@ def enforce_gates(dfb: pd.DataFrame, meta: pd.DataFrame):
         at_sub = str(row.get("at_substrate") or row.get("at_substrate_meta") or "").lower().strip()
         closure = str(row.get("closure") or row.get("closure_meta") or "")
         
-        # ER prohibition
-        if DISABLE_ER and "ER" in domains.upper():
-            logs.append(f"[FAIL] {rid}: ER domain found (domains={domains})")
+        # ER prohibition check
+        if not er_allowed and "ER" in domains.upper():
+            logs.append(f"[FAIL] {rid}: ER domain found but er_allowed=False (domains={domains})")
             return False, logs, None
         
         # EXT gate
@@ -87,8 +142,8 @@ def enforce_gates(dfb: pd.DataFrame, meta: pd.DataFrame):
                 logs.append(f"[FAIL] {rid}: EXT without KS+AT (domains={domains})")
                 return False, logs, None
             
-            if at_sub and at_sub not in ALLOWED_AT:
-                logs.append(f"[FAIL] {rid}: AT substrate '{at_sub}' not in {ALLOWED_AT}")
+            if at_sub and at_sub not in allowed_at:
+                logs.append(f"[FAIL] {rid}: AT substrate '{at_sub}' not in {allowed_at}")
                 return False, logs, None
             
             gene_domains.update(["KS", "AT"])
@@ -128,15 +183,19 @@ def enforce_gates(dfb: pd.DataFrame, meta: pd.DataFrame):
         logs.append("[WARN] No PT/TE observed in pathway (check CLOSURE rules)")
     
     # Generate gene specification
+    pt_mode_str = "/".join(pt_mode_list) if pt_mode_list else "unknown"
     gene_spec = {
         "required_domains": sorted(gene_domains),
-        "AT_substrates": sorted(at_used) if at_used else ["mal"],
-        "closure": "PT (C2-C7 aldol) + TE (lactonization/release)",
+        "AT_substrates": sorted(at_used) if at_used else sorted(allowed_at),
+        "ER_allowed": er_allowed,
+        "KR_mode": kr_mode,
+        "DH": dh_state,
+        "closure": f"PT ({pt_mode_str}) + {release_type}",
+        "tailoring": tailoring,
         "notes": [
-            "bacterial_aromatic_iPKS",
-            "ER_disabled",
-            "hexaketide_core (acetyl + 5×malonyl)",
-            "PT_mode: C2-C7 (preferred for isocoumarin)"
+            f"pks_type: {core.get('pks_type', 'I_NR')}",
+            f"ER: {'enabled' if er_allowed else 'disabled'}",
+            f"PT_mode: {pt_mode_str}"
         ]
     }
     
@@ -148,6 +207,7 @@ def main():
     
     # Load inputs
     sel, bal, meta = load_inputs()
+    constraints = load_constraints()
     
     if not sel.get("top1"):
         raise RuntimeError("selector_out.json has no top1. Run 01_mcs_template_selector.py first.")
@@ -162,10 +222,10 @@ def main():
     
     print(f"[INFO] Found {len(dfb)} reactions for {chosen}")
     
-    # Gate validation
-    ok, logs, gene_spec = enforce_gates(dfb, meta)
+    # Gate validation with constraints
+    ok, logs, gene_spec = enforce_gates(dfb, meta, constraints)
     
-    # ▼▼▼ Added: Force EXT×5 & PT ▼▼▼
+    # ▼▼▼ Added: Force EXT count & PT validation ▼▼▼
     # Sort (same criteria as route output)
     sort_cols = []
     if "module_from" in dfb.columns:
@@ -178,8 +238,8 @@ def main():
     else:
         dfb_sorted = dfb.copy()
     
-    # Force EXT count (Orthosporin: hexaketide = acetyl + 5×malonyl)
-    force_n_ext = 5
+    # Force EXT count from constraints
+    force_n_ext = constraints.get("core_pathway", {}).get("required_n_ext", 5)
     ext_count = 0
     if "step_type" in dfb_sorted.columns:
         ext_count = int((dfb_sorted["step_type"] == "EXT").sum())
@@ -215,16 +275,29 @@ def main():
     if sort_cols:
         dfb = dfb.sort_values(sort_cols, na_position='last')
     
-    # Select columns to output
-    step_cols = ["reaction_id"]
-    for c in ["step_type", "reactant_smiles", "product_smiles", "domains", "at_substrate"]:
-        if c in dfb.columns:
-            step_cols.append(c)
+    # Build steps with mechanism annotation for CLOSURE
+    steps = []
+    for _, row in dfb.iterrows():
+        step = {
+            "reaction_id": str(row["reaction_id"]),
+        }
+        # Add available columns
+        for col in ["step_type", "reactant_smiles", "product_smiles", "domains", "at_substrate"]:
+            if col in dfb.columns:
+                step[col] = str(row.get(col, ""))
+        
+        # Add mechanism annotation for CLOSURE steps
+        if row.get("step_type") == "CLOSURE":
+            pt_mode = "/".join(constraints.get("closure", {}).get("pt_mode_allowed", ["c2c7"]))
+            release = constraints.get("closure", {}).get("release", "TE_lactonization")
+            step["mechanism"] = f"PT ({pt_mode} aldol) + {release}"
+        
+        steps.append(step)
     
     route = {
         "bgc_id": chosen,
         "rules_seq": dfb["reaction_id"].astype(str).tolist(),
-        "steps": dfb[step_cols].fillna("").to_dict(orient="records"),
+        "steps": steps,
         "target": sel.get("target"),
         "selector_metrics": sel["top1"],
         "status": "PASS" if ok else "FAIL"

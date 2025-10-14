@@ -11,7 +11,8 @@
       "has_kr": true,
       "has_dh": true,
       "closure_type": "PT_OR_TE",
-      "at_substrate_set": "mal"
+      "at_substrate_set": "mal",
+      "hybrid_score": 10.430719176470589
     },
     {
       "bgc_id": "BGC1000002",
@@ -23,7 +24,8 @@
       "has_kr": true,
       "has_dh": true,
       "closure_type": "PT_OR_TE",
-      "at_substrate_set": "mal"
+      "at_substrate_set": "mal",
+      "hybrid_score": 10.387104164705883
     },
     {
       "bgc_id": "BGC1000000",
@@ -35,7 +37,8 @@
       "has_kr": false,
       "has_dh": true,
       "closure_type": "PT_OR_TE",
-      "at_substrate_set": "mal"
+      "at_substrate_set": "mal",
+      "hybrid_score": 0.6678735647058823
     },
     {
       "bgc_id": "BGC1000004",
@@ -47,7 +50,8 @@
       "has_kr": false,
       "has_dh": false,
       "closure_type": "PT_OR_TE",
-      "at_substrate_set": "mal"
+      "at_substrate_set": "mal",
+      "hybrid_score": 0.42901934117647067
     },
     {
       "bgc_id": "BGC1000007",
@@ -59,7 +63,8 @@
       "has_kr": false,
       "has_dh": false,
       "closure_type": "PT_OR_TE",
-      "at_substrate_set": "mal"
+      "at_substrate_set": "mal",
+      "hybrid_score": 0.42901934117647067
     },
     {
       "bgc_id": "BGC1000001",
@@ -71,7 +76,8 @@
       "has_kr": true,
       "has_dh": true,
       "closure_type": "PT_OR_TE",
-      "at_substrate_set": "mal"
+      "at_substrate_set": "mal",
+      "hybrid_score": 0.4058825529411765
     },
     {
       "bgc_id": "BGC1000003",
@@ -83,7 +89,8 @@
       "has_kr": true,
       "has_dh": false,
       "closure_type": "PT_OR_TE",
-      "at_substrate_set": "mal"
+      "at_substrate_set": "mal",
+      "hybrid_score": 0.34453772941176475
     },
     {
       "bgc_id": "BGC1000005",
@@ -95,7 +102,8 @@
       "has_kr": true,
       "has_dh": true,
       "closure_type": "PT_OR_TE",
-      "at_substrate_set": "mal"
+      "at_substrate_set": "mal",
+      "hybrid_score": 0.34453772941176475
     }
   ],
   "top1": {
@@ -108,6 +116,7 @@
     "has_kr": true,
     "has_dh": true,
     "closure_type": "PT_OR_TE",
-    "at_substrate_set": "mal"
+    "at_substrate_set": "mal",
+    "hybrid_score": 10.430719176470589
   }
 }

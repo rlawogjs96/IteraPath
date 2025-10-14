@@ -130,13 +130,50 @@ def main():
     mask_clo = base["step_type"].str.upper() == "CLOSURE"
     base.loc[mask_clo & (base["closure"].eq("") | base["closure"].str.lower().eq("nan")), "closure"] = "PT_OR_TE"
 
+    # ========== PT mode inference (manual mapping until GML parsing is ready) ==========
+    PT_MAP = {
+        # isocoumarin family
+        "BGC1000000": "c2c7",  # icmM (6-hydroxymellein)
+        "BGC1000001": "c2c7",  # SACE_5532
+        "BGC1000006": "c2c7",  # NcsB (naphthocyclinone)
+        # tetralone family
+        "BGC1000002": "c2c7",  # AziB (azinomycin)
+        "BGC1000005": "c2c7",  # ChlB1 (chlorothricin)
+        # other aromatic
+        "BGC1000003": "c2c7",  # PorKM1
+        "BGC1000004": "c2c7",  # CalO5 (calicheamicin)
+        "BGC1000007": "c2c7",  # AviM (avilamycin)
+    }
+    
+    def infer_pt_mode(row):
+        """Infer PT mode for CLOSURE steps (manual mapping until GML parsing)"""
+        if str(row.get("step_type", "")).upper() != "CLOSURE":
+            return ""
+        bgc = str(row.get("bgc_id", "")).strip()
+        return PT_MAP.get(bgc, "unknown")
+    
+    base["pt_mode"] = base.apply(infer_pt_mode, axis=1)
+    
+    # Strict validation: fail if any CLOSURE has unknown pt_mode
+    unknown_pt = base[(base["step_type"] == "CLOSURE") & (base["pt_mode"] == "unknown")]
+    if not unknown_pt.empty:
+        print("[ERROR] CLOSURE steps with unknown pt_mode detected:")
+        for _, row in unknown_pt.iterrows():
+            print(f"  - {row['reaction_id']} (BGC: {row.get('bgc_id', 'N/A')})")
+        raise AssertionError(
+            "CLOSURE step(s) with unknown pt_mode detected. "
+            "Please extend PT_MAP in 00_consolidate_rule_metadata.py before proceeding."
+        )
+    
+    print(f"[INFO] PT mode assigned to {int((base['pt_mode'] != '').sum())} CLOSURE steps")
+
     # Clean up output columns
     # module_from, module_to may have _im suffix
     out_cols = [
         "reaction_id","bgc_id",
         "module_from","module_from_im","module_to","module_to_im",
         "rule_type","step_type",
-        "domains_norm","at_substrate","closure","origin",
+        "domains_norm","at_substrate","closure","pt_mode","origin",
         "reactant_smiles","product_smiles","balanced",
         "domain","substrate","domains_im","at_substrate_im","file_stem"
     ]

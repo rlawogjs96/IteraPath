@@ -1,20 +1,19 @@
 {
   "_comment": "Orthosporin design constraints (for discussion)",
-  
   "core_pathway": {
     "starter": "acetyl",
     "required_n_ext": 5,
     "at_substrate": "mal",
     "er_allowed": false
   },
-  
   "closure": {
     "require_pt": true,
     "require_te": true,
-    "pt_mode_allowed": ["c2c7"],
+    "pt_mode_allowed": [
+      "c2c7"
+    ],
     "_note": "c2c7 = C2-C7 aldol (isocoumarin), c4c9 = C4-C9 aldol (tetralone)"
   },
-  
   "template_selection": {
     "strategy": "multi_objective",
     "weights": {
@@ -25,13 +24,15 @@
     },
     "_note": "Current: n_ext>=5 hard filter, then tanimoto/mcs"
   },
-  
   "validation_level": {
     "pt_mode_verification": "assumed",
-    "_options": ["assumed", "asserted_by_metadata", "auto_detected_from_gml"],
+    "_options": [
+      "assumed",
+      "asserted_by_metadata",
+      "auto_detected_from_gml"
+    ],
     "_note": "assumed = trust template, asserted = check rulemeta.pt_mode, auto = parse GML"
   },
-  
   "tailoring": {
     "_note": "C3 side chain formation mechanism unclear - requires experimental validation",
     "steps": [
@@ -52,4 +53,3 @@
     ]
   }
 }
-
