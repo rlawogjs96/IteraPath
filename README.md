@@ -4,14 +4,6 @@ Mechanistic, deterministic rule-based design toolkit for iterative PKS (iPKS) co
 
 Select a template BGC via structure similarity (MCS/Tanimoto), then replay & plan the biosynthesis using SynTemp/SynKit-style reaction rules (AAM → ITS → Rule/GML). Supports target-specific constraints (e.g., `required_n_ext=5`, `pt_mode=c2c7`, ER disabled) to guarantee carbon accounting and closure logic.
 
-## Why this exists
-
-BioPKS-type brute-force approaches can be non-deterministic and greedy. Here we separate **selection** from **construction**:
-- **MCS** = choose the template
-- **Rules** = build the pathway
-
-This yields reproducibility, explainability, and direct mapping to gene/domain specs.
-
 ---
 
 ## Key features
