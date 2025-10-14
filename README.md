@@ -1,4 +1,4 @@
-# iPKS-Designer (working title)
+# IteraPath
 
 Mechanistic, deterministic rule-based design toolkit for iterative PKS (iPKS) cores with gene-aware outputs.
 
