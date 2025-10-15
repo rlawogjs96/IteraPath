@@ -1,0 +1,30 @@
+rule [
+   ruleID "BGC1000001_m2_to_m3__r1"
+   left [
+      edge [ source 1 target 2 label "-" ]
+      edge [ source 5 target 7 label "-" ]
+      node [ id 12 label "*" ]
+      node [ id 1 label "C" ]
+      node [ id 5 label "C" ]
+      node [ id 2 label "C" ]
+      node [ id 7 label "C" ]
+      node [ id 11 label "*" ]
+      node [ id 13 label "*" ]
+   ]
+   context [
+   ]
+   right [
+      edge [ source 12 target 11 label "-" ]
+      edge [ source 12 target 1 label "-" ]
+      edge [ source 12 target 13 label "-" ]
+      edge [ source 1 target 5 label "-" ]
+      edge [ source 2 target 7 label "-" ]
+      node [ id 12 label "C" ]
+      node [ id 1 label "C" ]
+      node [ id 5 label "C" ]
+      node [ id 2 label "C" ]
+      node [ id 7 label "C" ]
+      node [ id 11 label "C" ]
+      node [ id 13 label "O" ]
+   ]
+]

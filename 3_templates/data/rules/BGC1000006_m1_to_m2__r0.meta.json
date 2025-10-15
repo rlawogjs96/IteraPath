@@ -1,14 +1,15 @@
 {
   "reaction_id": "BGC1000006_m1_to_m2",
-  "domain": [
-    "KS",
-    "AT",
-    "KR"
-  ],
-  "substrate": "malonyl",
-  "stereochem_tag": "KR_unknown",
-  "closure": "",
-  "origin": "iPKS_bacterial",
-  "rule_type": "EXT",
-  "rule_file": "BGC1000006_m1_to_m2__r0.gml"
+  "reactions": "CC(=O)CC(=O)[S]>>CC(=O)CC(O)CC(=O)[S]",
+  "num_nodes": 10,
+  "num_left_edges": 6,
+  "num_right_edges": 9,
+  "changed_nodes": [
+    8,
+    9,
+    1,
+    2,
+    3,
+    10
+  ]
 }

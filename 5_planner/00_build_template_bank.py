@@ -2,10 +2,11 @@
 from pathlib import Path
 import pandas as pd
 
-# Input paths (relative to 5_planner root)
-BALANCED = Path("../2_balancing/data/balanced_only.csv")
-RULEMETA = Path("../4_rulemeta/data/rulemeta.csv")
-OUTBANK  = Path("./data/template_bank.csv")
+# Resolve paths relative to this script location (repo-root safe)
+BASE     = Path(__file__).resolve().parent
+BALANCED = BASE.parent / "2_balancing" / "data" / "balanced_only.csv"
+RULEMETA = BASE.parent / "4_rulemeta" / "data" / "rulemeta.csv"
+OUTBANK  = BASE / "data" / "template_bank.csv"
 
 def load_tables():
     """Load input files"""
@@ -55,15 +56,21 @@ def build_bank(bal: pd.DataFrame, meta: pd.DataFrame) -> pd.DataFrame:
         # CLOSURE step's product_smiles takes priority
         if "step_type" in dfbgc.columns:
             clo = dfbgc[dfbgc["step_type"] == "CLOSURE"]
-            if not clo.empty and "product_smiles" in clo.columns:
+            if not clo.empty:
                 sorted_clo = clo.sort_values(["module_from", "module_to"], na_position='last')
-                return sorted_clo.iloc[-1]["product_smiles"]
+                # Prefer standardized column if present
+                if "product_smiles_std" in sorted_clo.columns:
+                    return sorted_clo.iloc[-1]["product_smiles_std"]
+                if "product_smiles" in sorted_clo.columns:
+                    return sorted_clo.iloc[-1]["product_smiles"]
         # fallback: last product_smiles in BGC
         if "module_from" in dfbgc.columns and "module_to" in dfbgc.columns:
             sorted_bgc = dfbgc.sort_values(["module_from", "module_to"], na_position='last')
         else:
             sorted_bgc = dfbgc
-        return sorted_bgc.iloc[-1]["product_smiles"]
+        if "product_smiles_std" in sorted_bgc.columns:
+            return sorted_bgc.iloc[-1]["product_smiles_std"]
+        return sorted_bgc.iloc[-1].get("product_smiles", "")
     
     rows = []
     for bgc, dfb in ready.groupby("bgc_id"):

@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
 """
-Validate & normalize iPKS_rxn.csv
-- Locks a canonical schema via alias mapping
-- Trims/normalizes values
-- Tokenizes domain list -> KS/AT/KR/DH/ER/TE/PT
-- Optionally validates/canonicalizes SMILES (if RDKit available)
-Outputs:
-  - iPKS_rxn.cleaned.csv
-  - qc_report.md
+- Purpose: Clean and standardize the raw iPKS_rxn.csv file. 
+- Actions: 
+    * Canonicalizes column names using aliases (bgc_id, step_idx, domains, etc.) 
+    * Normalize domain labels (KS, AT, KR, DH, ER, TE, PT, ACP)
+    * Canonicalizes SMILES strings via RDKit (MolToSmiles) 
+    * Deduplicates rows and writes: iPKS_rxn.cleaned.csv
+    * Writes a QC report: qc_report.md
 """
 
 import sys, re, csv, os
@@ -51,7 +50,7 @@ CANON = [
 ]
 
 # Allowed domain tokens
-DOMAIN_VOCAB = {"KS","AT","KR","DH","ER","TE","PT"}
+DOMAIN_VOCAB = {"KS","AT","KR","DH","ER","TE","PT","ACP"}
 
 # Try RDKit (optional)
 try:
@@ -69,7 +68,7 @@ def _strip_norm(x: str):
     return x
 
 def normalize_domains(cell: str):
-    """Split on comma/semicolon/space, normalize tokens -> KS/AT/KR/DH/ER/TE/PT"""
+    """Split on comma/semicolon/space, normalize tokens -> KS/AT/KR/DH/ER/TE/PT/ACP"""
     if not cell: return ""
     # split on common separators
     toks = re.split(r"[;,/ ]+", cell.strip())
@@ -78,7 +77,7 @@ def normalize_domains(cell: str):
     for t in toks:
         u = t.upper().strip()
         # quick aliasing
-        if u in {"ACP"}: continue  # exclude carrier
+        if u in {"ACYL","ACYL_CARRIER_PROTEIN","ACYL-CARRIER-PROTEIN"}: u = "ACP"
         if u in {"THIOESTERASE"}: u = "TE"
         if u in {"PRODUCTTEMPLATE","PTD","PT_DOMAIN"}: u = "PT"
         if u in {"KETOREDUCTASE"}: u = "KR"

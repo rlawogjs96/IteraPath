@@ -1,0 +1,25 @@
+{
+  "reaction_id": "BGC1000000_m4_to_m5",
+  "reactions": "CC(=O)CC(=O)CC(=O)CC(=O)CC(=O)[S]>>CC1=CC2=CC(=CC(=C2C(=O)O1)O)O",
+  "radius": 3,
+  "num_nodes": 15,
+  "num_left_edges": 14,
+  "num_right_edges": 14,
+  "changed_nodes": [
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16
+  ]
+}

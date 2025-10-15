@@ -3,12 +3,13 @@ from pathlib import Path
 import json
 import pandas as pd
 
-# Input/output paths (relative to 5_planner root)
-SELECTOR = Path("./data/selector_out.json")
-BALANCED = Path("../2_balancing/data/balanced_only.csv")
-RULEMETA = Path("../4_rulemeta/data/rulemeta.csv")
+# Resolve relative to this script
+BASE     = Path(__file__).resolve().parent
+SELECTOR = BASE / "data" / "selector_out.json"
+BALANCED = BASE.parent / "2_balancing" / "data" / "balanced_only.csv"
+RULEMETA = BASE.parent / "4_rulemeta" / "data" / "rulemeta.csv"
 
-OUTDIR   = Path("../cases/orthosporin")
+OUTDIR   = BASE.parent / "cases" / "orthosporin"
 OUT_ROUTE= OUTDIR / "route.json"
 OUT_GENE = OUTDIR / "gene_spec.json"
 OUT_AUD  = OUTDIR / "audit.md"

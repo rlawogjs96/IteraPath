@@ -1,12 +1,19 @@
 {
   "reaction_id": "BGC1000006_m5_to_m6",
-  "domain": [
-    "DH"
-  ],
-  "substrate": "unknown",
-  "stereochem_tag": "unknown",
-  "closure": "PT_OR_TE",
-  "origin": "iPKS_bacterial",
-  "rule_type": "CLOSURE",
-  "rule_file": "BGC1000006_m5_to_m6__r0.gml"
+  "reactions": "CC(=O)CC(O)CC(=O)CC(O)CC(=O)CC(=O)[S]>>CC1=C2C=CC(O)=C(C2=CC=C1)C(=O)O",
+  "num_nodes": 19,
+  "num_left_edges": 18,
+  "num_right_edges": 16,
+  "changed_nodes": [
+    16,
+    19,
+    13,
+    10,
+    9,
+    7,
+    6,
+    4,
+    3,
+    15
+  ]
 }

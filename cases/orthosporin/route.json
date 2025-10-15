@@ -12,48 +12,36 @@
     {
       "reaction_id": "BGC1000006_m0_to_m1",
       "step_type": "EXT",
-      "reactant_smiles": "CC(=O)[S]",
-      "product_smiles": "CC(=O)CC(=O)[S]",
-      "domains": "KS,AT",
+      "domains": "KS,AT,ACP",
       "at_substrate": "mal"
     },
     {
       "reaction_id": "BGC1000006_m1_to_m2",
       "step_type": "EXT",
-      "reactant_smiles": "CC(=O)CC(=O)[S]",
-      "product_smiles": "CC(=O)CC(O)CC(=O)[S]",
-      "domains": "KS,AT,KR",
+      "domains": "KS,AT,KR,ACP",
       "at_substrate": "mal"
     },
     {
       "reaction_id": "BGC1000006_m2_to_m3",
       "step_type": "EXT",
-      "reactant_smiles": "CC(=O)CC(O)CC(=O)[S]",
-      "product_smiles": "CC(=O)CC(O)CC(=O)CC(=O)[S]",
-      "domains": "KS,AT",
+      "domains": "KS,AT,ACP",
       "at_substrate": "mal"
     },
     {
       "reaction_id": "BGC1000006_m3_to_m4",
       "step_type": "EXT",
-      "reactant_smiles": "CC(=O)CC(O)CC(=O)CC(=O)[S]",
-      "product_smiles": "CC(=O)CC(O)CC(=O)CC(O)CC(=O)[S]",
-      "domains": "KS,AT,KR",
+      "domains": "KS,AT,KR,ACP",
       "at_substrate": "mal"
     },
     {
       "reaction_id": "BGC1000006_m4_to_m5",
       "step_type": "EXT",
-      "reactant_smiles": "CC(=O)CC(O)CC(=O)CC(O)CC(=O)[S]",
-      "product_smiles": "CC(=O)CC(O)CC(=O)CC(O)CC(=O)CC(=O)[S]",
-      "domains": "KS,AT",
+      "domains": "KS,AT,ACP",
       "at_substrate": "mal"
     },
     {
       "reaction_id": "BGC1000006_m5_to_m6",
       "step_type": "CLOSURE",
-      "reactant_smiles": "CC(=O)CC(O)CC(=O)CC(O)CC(=O)CC(=O)[S]",
-      "product_smiles": "CC1=C2C=CC(O)=C(C2=CC=C1)C(=O)O",
       "domains": "DH",
       "at_substrate": "nan",
       "mechanism": "PT (c2c7 aldol) + TE_lactonization"

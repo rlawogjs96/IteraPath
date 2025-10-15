@@ -2,10 +2,12 @@ from pathlib import Path
 import pandas as pd
 import ast
 
-IN_RULES = Path("../../3_templates/data/rules_index.csv")
-IN_META  = Path("../../1_preprocessing/data/syntemp_input_meta.csv")
-IN_BAL   = Path("../../2_balancing/data/balanced_only.csv")
-OUT_PATH = Path("../data/rulemeta.csv")
+BASE     = Path(__file__).resolve().parent
+IN_RULES = BASE.parent.parent / "3_templates" / "data" / "rules_index.csv"
+IN_META  = BASE.parent.parent / "1_preprocessing" / "data" / "syntemp_input_meta.csv"
+IN_BAL   = BASE.parent.parent / "2_balancing" / "data" / "balanced_only.csv"
+OUT_PATH = BASE.parent / "data" / "rulemeta.csv"
+IN_AAM   = BASE.parent.parent / "3_templates" / "data" / "aam.ndjson"
 
 def _safe_list(v):
     if pd.isna(v):
@@ -46,6 +48,12 @@ def main():
     print(f"[INFO] Loading balanced    from: {IN_BAL.resolve()}")
 
     rules = load_csv(IN_RULES, "rules_index")
+    # Parse variant index from file_stem suffix (__rN); keep ALL rows (one per rule file)
+    if "file_stem" in rules.columns:
+        rules["variant"] = (
+            rules["file_stem"].astype(str).str.extract(r"__r(\d+)$").astype("Int64")
+        )
+        rules["variant"] = rules["variant"].fillna(0).astype(int)
     meta  = load_csv(IN_META,  "input_meta")
     bal   = load_csv(IN_BAL,   "balanced_only")
 
@@ -67,10 +75,26 @@ def main():
         base = base.drop(columns=["reaction_id_im"])
 
     # Check if balanced column exists before merging
-    bal_cols = ["reaction_id","reactant_smiles","product_smiles"]
+    # Adapt to current balancing headers
+    # Prefer standardized names if present
+    bal_cols = ["reaction_id"]
+    if "reactant_smiles_std" in bal.columns:
+        bal_cols += ["reactant_smiles_std","product_smiles_std"]
+    elif set(["reactant_smiles","product_smiles"]).issubset(bal.columns):
+        bal_cols += ["reactant_smiles","product_smiles"]
     if "balanced" in bal.columns:
         bal_cols.append("balanced")
     base = base.merge(bal[bal_cols], on="reaction_id", how="left")
+
+    # Optional: merge selected mapper and AAM from AAM NDJSON if present
+    if IN_AAM.exists():
+        try:
+            aam_df = pd.read_json(IN_AAM, lines=True)
+            keep_cols = [c for c in ["reaction_id","selected_mapper","aam"] if c in aam_df.columns]
+            if keep_cols:
+                base = base.merge(aam_df[keep_cols], on="reaction_id", how="left")
+        except Exception:
+            pass
 
     # Normalize bgc_id: first valid value from rules / meta / balanced
     def unify_bgc(row):
@@ -133,7 +157,7 @@ def main():
     # ========== PT mode inference (manual mapping until GML parsing is ready) ==========
     PT_MAP = {
         # isocoumarin family
-        "BGC1000000": "c2c7",  # icmM (6-hydroxymellein)
+        "BGC1000000": "c2c7",  # icmM (6-hydroxy"8-hydroxy-3-methyl-3,4-dihydroisochromen-1-one")
         "BGC1000001": "c2c7",  # SACE_5532
         "BGC1000006": "c2c7",  # NcsB (naphthocyclinone)
         # tetralone family
@@ -174,8 +198,9 @@ def main():
         "module_from","module_from_im","module_to","module_to_im",
         "rule_type","step_type",
         "domains_norm","at_substrate","closure","pt_mode","origin",
-        "reactant_smiles","product_smiles","balanced",
-        "domain","substrate","domains_im","at_substrate_im","file_stem"
+        "reactant_smiles_std","product_smiles_std","reactant_smiles","product_smiles","balanced",
+        "domain","substrate","domains_im","at_substrate_im","file_stem",
+        "variant","selected_mapper","aam"
     ]
     # Select only existing columns
     existing_cols = [c for c in out_cols if c in base.columns]

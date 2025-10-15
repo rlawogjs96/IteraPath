@@ -35,9 +35,7 @@ def norm_domains(cell: str):
     out = []
     for t in toks:
         u = t.upper()
-        if u in {"", "ACP"}:  # Exclude ACP
-            continue
-        # Simple aliases
+        if u in {"ACYL","ACYL_CARRIER_PROTEIN","ACYL-CARRIER-PROTEIN"}: u = "ACP"
         if u in {"THIOESTERASE"}: u = "TE"
         if u in {"PRODUCTTEMPLATE", "PTDOMAIN", "PTD"}: u = "PT"
         if u in {"KETOREDUCTASE"}: u = "KR"

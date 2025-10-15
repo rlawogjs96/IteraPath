@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
 """
-Link consecutive modules (n -> n+1) into reaction pairs for each BGC.
-Input : iPKS_rxn.cleaned.csv  (from 00_validate_and_normalize)
-Output: iPKS_rxn.reactions.csv
-Each row = one reaction step: reactant_smiles, product_smiles, module_from, module_to, domains
+- Purpose: Link consecutive modules (n -> n+1) into reaction pairs for each BGC. 
+- Actions:
+    * Input: iPKS_rxn.cleaned.csv  (from 00_validate_and_normalize)
+    * Output: iPKS_rxn.reactions.csv
+    * Each row = one reaction step: reactant_smiles, product_smiles, module_from, module_to, domains
+    * Canonicalizes column names using aliases (bgc_id, step_idx, domains, etc.) 
+    * Deduplicates rows and writes: iPKS_rxn.reactions.csv
 """
 
 import pandas as pd

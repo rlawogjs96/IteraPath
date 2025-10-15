@@ -24,8 +24,16 @@ def main():
     keep = df[mask].copy()
 
     # recommended: keep only known step_types (EXT/KR/DH/CLOSURE). Exclude OTHER
-    allowed = {"EXT","KR","DH","CLOSURE"}
+    """
+        - Keep only known step_types (EXT/KR/DH/CLOSURE). 
+        - Exclude OTHER
+    """
+    allowed = {"EXT","KR","DH","ER","CLOSURE"}
     keep = keep[keep["step_type"].isin(allowed)].copy()
+
+    # sanitize metadata values like literal 'nan'
+    if "at_substrate" in keep.columns:
+        keep["at_substrate"] = keep["at_substrate"].replace({"nan":"", "NaN":"", "NONE":"", "None":""})
 
     # minimal SynTemp input
     syn = keep[["reaction_id","reactant_smiles","product_smiles"]].drop_duplicates().reset_index(drop=True)

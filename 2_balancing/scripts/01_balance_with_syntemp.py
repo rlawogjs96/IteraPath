@@ -17,7 +17,12 @@
 # - We keep the dataset's thioester placeholder "[S]" (terminal sulfur atom).
 # - Small molecules are encoded as: H2="[H][H]", H2O="O", CO2="O=C=O".
 # - If EXT has extender other than malonyl, we leave it unhandled (fail) to stay precise.
-
+"""
+EXT decarboxylation: iPKS extension with malonyl proceeds via decarboxylative Claisen condensation, releasing CO2 and elongating the acyl thioester; you model this with malonyl-S addition and CO2 in the overall mass balance (implicit in the elongation plus the malonyl “CC(=O)[S]” unit) and with [SH] release consistent with carrier turnover at step completion.
+KR/DH/ER hydrogen and water stoichiometry: selective β-keto processing steps involve reduction (KR), dehydration (DH), and hydrogenation (ER). Representing KR/ER by adding H2 and DH by releasing H2O yields correct elemental balance at the reaction-graph level, which the balancing checker expects.
+CLOSURE/PT/TE off-loading: bacterial aromatic iPKS systems off-load by hydrolysis (TE-like) or via ACP/AT-centered schemes; modeling closure as consuming H2O and releasing [SH] is a chemically sensible abstraction for thioester hydrolysis/lactonization, consistent with observed off-loading mechanisms and ACP-centered transfer in the literature.
+ACP retention: ACP is structurally essential in iPKS (chain tethering, sometimes multiple ACPs). Keeping ACP in metadata aligns with biological reality and supports downstream gating (and gene domain summaries), while still providing an ACP-free column for analyses that require it.
+"""
 from pathlib import Path
 import pandas as pd
 from syntemp.SynChemistry.balance_checker import BalanceReactionCheck
@@ -29,52 +34,73 @@ OUT_MD   = Path("../data/balance_summary.md")
 OUT_CSV.parent.mkdir(parents=True, exist_ok=True)
 
 # Small molecules (SMILES)
-H2   = "[H][H]"
-H2O  = "O"
-CO2  = "O=C=O"
+"""
+Small molecules turn 1→1 pairs into chemically balanced multi-molecular reactions, so SynTemp's BalanceReactionCheck accepts them. 
+iPKS chemistry consumes / produces co-substrates / products that are not in the minimal pairs. 
+"""
+H2   = "[H][H]" #Redudctions
+H2O  = "O" #Dehydration
+CO2  = "O=C=O" #Decarboxylation
 
 # BioPKS convention
+"""
+In bacterial aromatic iPKS, malonyl is the canonical extender; decarboxylative Claisen condensation releases CO2; acyl chains are ACP-bound and carriers turnover/release. 
+This is the standard literature model; the code encodes that stoichiometry explicitly for balancing. The small molecules aren’t just for malonyl—H2 and H2O also capture KR/ER and DH stoichiometry systematically.
+"""
 MALONYL_THIO = "CC(=O)[S]"
 
 def has_token(domstr: str, token: str) -> bool:
     if not isinstance(domstr, str): return False
     return token.upper() in {t.strip().upper() for t in domstr.replace(";",",").split(",") if t.strip()}
 
+#Correctly add "hidden" co-substrates/products so that BalanceReactionCheck sees a fully mass-balanced multi-molecular reaction, not "1+1" pairs. 
 def augment_by_step(rs: str, ps: str, step: str, at_substrate: str, domains_norm: str) -> tuple[str,str,str]:
     s  = (step or "").upper()
     at = (at_substrate or "").lower()
     kr_here = has_token(domains_norm, "KR")
     dh_here = has_token(domains_norm, "DH")
 
+    #iPKS literature: Malonyl extender adds "two" carbons through decarboxylative Claisen condensation; the chain remains as a thioester on ACP, decarboxylation releases CO2; carrier cycles / recycles. 
+    #iPKS EXT = decarboxylative; CO2 release is explicit.
+    #Carrier turnover/off-loading patterns rely on ACP; [SH] release accounts for the carrier's departure in the net balance. 
+    #Co-occurring reductive tailoring (KR/DH) is allowed in partially reducing iPKS and modeled here with proper H2/H2O bookkeeping. 
     if s == "EXT":
-        if at in ("mal","malonyl","malonyl-acp","malonyl_coa","malonylcoa"):
-            # BioPKS: malonyl-S abbreviation = CC(=O)[S]
-            r_mix = f"{rs}.CC(=O)[S]"
-            # If KR co-occurs, consume H2
-            if kr_here:
-                r_mix = f"{r_mix}.[H][H]"
-            # Product side: carrier release as [SH] (to balance H)
-            p_mix = f"{ps}.[SH]"
-            # If DH co-occurs, release H2O
+        if at == "mal":
+            # BioPKS: malonyl-S abbreviation = CC(=O)[S]; decarboxylation releases CO2
+            r_mix = f"{rs}.CC(=O)[S]" #Reactants: add malonyl thioester. 
+            # If KR co-occurs, consume H2 on reactant side (reductive extension) 
+            if kr_here: 
+                r_mix = f"{r_mix}.[H][H]" #Add H2 to reactants (reductive processing). 
+            # Product side: carrier returns as [SH]; decarboxylation -> +CO2; DH co-occurs -> +H2O
+            p_mix = f"{ps}.[SH].O=C=O" #Products: add [SH] (carrier release accounting) and CO2 (decarboxylation). 
             if dh_here:
-                p_mix = f"{p_mix}.O"
-            why = "EXT(mal): +acetyl-S; " + ("+H2(KR); " if kr_here else "") + ("+H2O(DH); " if dh_here else "") + "release [SH]"
+                p_mix = f"{p_mix}.O" #If DH is present, add H2O products (dehydration generates) water. 
+            why = (
+                "EXT(mal): +acetyl-S; "
+                + ("+H2(KR); " if kr_here else "")
+                + ("+H2O(DH); " if dh_here else "")
+                + "+CO2; release [SH]"
+            )
             return r_mix, p_mix, why
         else:
             return rs, ps, f"EXT({at}) not handled"
 
+    #β‑keto → β‑OH requires a reductant.
     if s == "KR":
-        return f"{rs}.[H][H]", ps, "KR: +H2 (reactant)"
+        return f"{rs}.[H][H]", ps, "KR: +H2 (reactant)" #Add H2 to reactants. Hydrogen source often not bound to the chain; modeling H2 balances the net hydrogen uptake at the reaction-graph level, as required by the checker and by SynTemp's hydrogen completeness emphasis. 
 
-    if s == "DH":
-        return rs, f"{ps}.O", "DH: +H2O (product)"
+    #Dehydration
+    if s == "DH": 
+        return rs, f"{ps}.O", "DH: +H2O (product)" #Add H2O on product side. Explicit water formation balances O/H, consistent with dehydration. 
 
-    if s == "ER":
-        return f"{rs}.[H][H]", ps, "ER: +H2 (reactant)"
+    #Enoyl Reduction. Enoyl --> Saturated requires reducing equivalents. 
+    #if s == "ER":
+        #return f"{rs}.[H][H]", ps, "ER: +H2 (reactant)" #Add H2 to reactants. Hydrogenation captured as external H2 consumption in the net balance. 
 
+    #iPKS off-loading often via TE-like hydrolysis or ACP/AT-centered schemes; isocoumarin PT introduces an aldol-type ring closure followed by TE-like release. 
     if s == "CLOSURE":
         # hydrolysis-like: consume H2O + release [SH]
-        return f"{rs}.O", f"{ps}.[SH]", "CLOSURE: +H2O (reactant), release [SH] (product)"
+        return f"{rs}.O", f"{ps}.[SH]", "CLOSURE: +H2O (reactant), release [SH] (product)" #Add H2O to reactants (hydrolysis) and [SH] to products (Carrier fragment released). Captures hydrolytic release and carrier turnover in the overall balance. 
 
     return rs, ps, "OTHER/unknown: no augmentation"
 
