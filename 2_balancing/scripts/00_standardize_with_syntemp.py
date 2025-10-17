@@ -25,6 +25,7 @@ from syntemp.SynChemistry.deionize import Deionize
 from syntemp.SynChemistry.tautomerize import Tautomerize
 
 INCSV  = Path("../../1_preprocessing/data/syntemp_input.csv")  # reaction_id, reactant_smiles, product_smiles
+#INCSV  = Path("../../1_preprocessing/data/syntemp_input_with_mal.csv")
 OUTCSV = Path("../data/syntemp_input.standardized.csv")
 OUTCSV.parent.mkdir(parents=True, exist_ok=True)
 

@@ -1,0 +1,138 @@
+{
+  "mode": "cross_bgc_rule_level",
+  "target": "CC(CC1=CC2=CC(=CC(=C2C(=O)O1)O)O)O",
+  "constraints": {
+    "_comment": "Orthosporin design constraints (for discussion)",
+    "core_pathway": {
+      "starter": "acetyl",
+      "required_n_ext": 5,
+      "at_substrate": "mal",
+      "er_allowed": false
+    },
+    "closure": {
+      "require_pt": true,
+      "require_te": true,
+      "pt_mode_allowed": [
+        "c2c7"
+      ],
+      "_note": "c2c7 = C2-C7 aldol (isocoumarin), c4c9 = C4-C9 aldol (tetralone)"
+    },
+    "template_selection": {
+      "strategy": "multi_objective",
+      "weights": {
+        "n_ext_match": 10.0,
+        "tanimoto": 5.0,
+        "mcs_ratio": 2.0,
+        "n_ext_penalty": -1.0
+      },
+      "_note": "Current: n_ext>=5 hard filter, then tanimoto/mcs"
+    },
+    "validation_level": {
+      "pt_mode_verification": "assumed",
+      "_options": [
+        "assumed",
+        "asserted_by_metadata",
+        "auto_detected_from_gml"
+      ],
+      "_note": "assumed = trust template, asserted = check rulemeta.pt_mode, auto = parse GML"
+    },
+    "tailoring": {
+      "_note": "C3 side chain formation mechanism unclear - requires experimental validation",
+      "steps": [
+        {
+          "name": "C7_O_methylation",
+          "domain": "O-MT (O-methyltransferase)",
+          "substrate": "SAM",
+          "delta": "+CH3",
+          "optional": true,
+          "note": "ON = diaporthin, OFF = orthosporin"
+        },
+        {
+          "name": "C3_modification",
+          "domain": "Unknown (possibly chain extension + P450)",
+          "delta": "+C3H6O (2-hydroxypropyl)",
+          "note": "Mechanism unclear - not simple MT+P450. May involve core biosynthesis pathway."
+        }
+      ]
+    }
+  },
+  "chosen_closure": {
+    "reaction_id": "BGC1000000_m4_to_m5",
+    "bgc_id": "BGC1000000",
+    "tanimoto": 0.5641025641025641,
+    "gml_path": "C:\\IteraPath\\3_templates\\data\\rules\\BGC1000000_m4_to_m5__r0.gml",
+    "product_smiles": "CC1=CC2=CC(=CC(=C2C(=O)O1)O)O"
+  },
+  "ext_rules": [
+    {
+      "reaction_id": "BGC1000000_m0_to_m1",
+      "bgc_id": "BGC1000000",
+      "gml_path": "C:\\IteraPath\\3_templates\\data\\rules\\BGC1000000_m0_to_m1__r0.gml"
+    },
+    {
+      "reaction_id": "BGC1000001_m0_to_m1",
+      "bgc_id": "BGC1000001",
+      "gml_path": "C:\\IteraPath\\3_templates\\data\\rules\\BGC1000001_m0_to_m1__r0.gml"
+    },
+    {
+      "reaction_id": "BGC1000002_m0_to_m1",
+      "bgc_id": "BGC1000002",
+      "gml_path": "C:\\IteraPath\\3_templates\\data\\rules\\BGC1000002_m0_to_m1__r0.gml"
+    },
+    {
+      "reaction_id": "BGC1000003_m0_to_m1",
+      "bgc_id": "BGC1000003",
+      "gml_path": "C:\\IteraPath\\3_templates\\data\\rules\\BGC1000003_m0_to_m1__r0.gml"
+    },
+    {
+      "reaction_id": "BGC1000004_m0_to_m1",
+      "bgc_id": "BGC1000004",
+      "gml_path": "C:\\IteraPath\\3_templates\\data\\rules\\BGC1000004_m0_to_m1__r0.gml"
+    }
+  ],
+  "route_steps": [
+    {
+      "order": 1,
+      "step_type": "EXT",
+      "reaction_id": "BGC1000000_m0_to_m1",
+      "bgc_id": "BGC1000000",
+      "gml_path": "C:\\IteraPath\\3_templates\\data\\rules\\BGC1000000_m0_to_m1__r0.gml"
+    },
+    {
+      "order": 2,
+      "step_type": "EXT",
+      "reaction_id": "BGC1000001_m0_to_m1",
+      "bgc_id": "BGC1000001",
+      "gml_path": "C:\\IteraPath\\3_templates\\data\\rules\\BGC1000001_m0_to_m1__r0.gml"
+    },
+    {
+      "order": 3,
+      "step_type": "EXT",
+      "reaction_id": "BGC1000002_m0_to_m1",
+      "bgc_id": "BGC1000002",
+      "gml_path": "C:\\IteraPath\\3_templates\\data\\rules\\BGC1000002_m0_to_m1__r0.gml"
+    },
+    {
+      "order": 4,
+      "step_type": "EXT",
+      "reaction_id": "BGC1000003_m0_to_m1",
+      "bgc_id": "BGC1000003",
+      "gml_path": "C:\\IteraPath\\3_templates\\data\\rules\\BGC1000003_m0_to_m1__r0.gml"
+    },
+    {
+      "order": 5,
+      "step_type": "EXT",
+      "reaction_id": "BGC1000004_m0_to_m1",
+      "bgc_id": "BGC1000004",
+      "gml_path": "C:\\IteraPath\\3_templates\\data\\rules\\BGC1000004_m0_to_m1__r0.gml"
+    },
+    {
+      "order": 6,
+      "step_type": "CLOSURE",
+      "reaction_id": "BGC1000000_m4_to_m5",
+      "bgc_id": "BGC1000000",
+      "gml_path": "C:\\IteraPath\\3_templates\\data\\rules\\BGC1000000_m4_to_m5__r0.gml",
+      "note": "PT (c2c7) + TE lactonization expected"
+    }
+  ]
+}

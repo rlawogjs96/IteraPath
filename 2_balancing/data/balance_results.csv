@@ -1,39 +1,39 @@
 reaction_id,reactions,balanced,augmentation,step_type,at_substrate
-BGC1000000_m0_to_m1,CC(=O)[S].CC(=O)[S]>>CC(=O)CC(=O)[S].[SH].O=C=O,False,EXT(mal): +acetyl-S; +CO2; release [SH],EXT,mal
-BGC1000000_m1_to_m2,CC(=O)CC(=O)[S].CC(=O)[S]>>CC(=O)CC(=O)CC(=O)[S].[SH].O=C=O,False,EXT(mal): +acetyl-S; +CO2; release [SH],EXT,mal
-BGC1000000_m2_to_m3,CC(=O)CC(=O)CC(=O)[S].CC(=O)[S]>>CC(=O)CC(=O)CC(=O)CC(=O)[S].[SH].O=C=O,False,EXT(mal): +acetyl-S; +CO2; release [SH],EXT,mal
-BGC1000000_m3_to_m4,CC(=O)CC(=O)CC(=O)CC(=O)[S].CC(=O)[S]>>CC(=O)CC(=O)CC(=O)CC(=O)CC(=O)[S].[SH].O=C=O,False,EXT(mal): +acetyl-S; +CO2; release [SH],EXT,mal
-BGC1000000_m4_to_m5,CC(=O)CC(=O)CC(=O)CC(=O)CC(=O)[S].O>>CC1=CC2=CC(=CC(=C2C(=O)O1)O)O.[SH],False,"CLOSURE: +H2O (reactant), release [SH] (product)",CLOSURE,
-BGC1000001_m0_to_m1,CC(=O)[S].CC(=O)[S].[H][H]>>CC(O)CC(=O)[S].[SH].O=C=O,False,EXT(mal): +acetyl-S; +H2(KR); +CO2; release [SH],EXT,mal
-BGC1000001_m1_to_m2,CC(O)CC(=O)[S].CC(=O)[S]>>CC(O)CC(=O)CC(=O)[S].[SH].O=C=O,False,EXT(mal): +acetyl-S; +CO2; release [SH],EXT,mal
-BGC1000001_m2_to_m3,CC(O)CC(=O)CC(=O)[S].CC(=O)[S].[H][H]>>CC(O)CC(=O)CC(O)CC(=O)[S].[SH].O=C=O,False,EXT(mal): +acetyl-S; +H2(KR); +CO2; release [SH],EXT,mal
-BGC1000001_m3_to_m4,CC(O)CC(=O)CC(O)CC(=O)[S].CC(=O)[S]>>CC(O)CC(=O)CC(O)CC(=O)CC(=O)[S].[SH].O=C=O,False,EXT(mal): +acetyl-S; +CO2; release [SH],EXT,mal
-BGC1000001_m4_to_m5,CC(O)CC(=O)CC(O)CC(=O)CC(=O)[S].O>>C[C@@H]1CC2=C(C(=CC=C2)O)C(=O)O1.[SH],False,"CLOSURE: +H2O (reactant), release [SH] (product)",CLOSURE,
-BGC1000002_m0_to_m1,CC(=O)[S].CC(=O)[S]>>CC(=O)CC(=O)[S].[SH].O=C=O,False,EXT(mal): +acetyl-S; +CO2; release [SH],EXT,mal
-BGC1000002_m1_to_m2,CC(=O)CC(=O)[S].CC(=O)[S].[H][H]>>CC(=O)CC(O)CC(=O)[S].[SH].O=C=O,False,EXT(mal): +acetyl-S; +H2(KR); +CO2; release [SH],EXT,mal
-BGC1000002_m2_to_m3,CC(=O)CC(O)CC(=O)[S].CC(=O)[S]>>CC(=O)CC(O)CC(=O)CC(=O)[S].[SH].O=C=O,False,EXT(mal): +acetyl-S; +CO2; release [SH],EXT,mal
-BGC1000002_m3_to_m4,CC(=O)CC(O)CC(=O)CC(=O)[S].CC(=O)[S].[H][H]>>CC(=O)CC(O)CC(=O)CC(O)CC(=O)[S].[SH].O=C=O,False,EXT(mal): +acetyl-S; +H2(KR); +CO2; release [SH],EXT,mal
-BGC1000002_m4_to_m5,CC(=O)CC(O)CC(=O)CC(O)CC(=O)[S].CC(=O)[S].[H][H]>>CC(=O)CC(O)CC(=O)CC(O)CC(O)CC(=O)[S].[SH].O=C=O,False,EXT(mal): +acetyl-S; +H2(KR); +CO2; release [SH],EXT,mal
-BGC1000002_m5_to_m6,CC(=O)CC(O)CC(=O)CC(O)CC(O)CC(=O)[S].O>>CC1=C2C=CC=C(C2=CC=C1)C(=O)O.[SH],False,"CLOSURE: +H2O (reactant), release [SH] (product)",CLOSURE,
-BGC1000003_m0_to_m1,CC(=O)[S].CC(=O)[S]>>CC(=O)CC(=O)[S].[SH].O=C=O,False,EXT(mal): +acetyl-S; +CO2; release [SH],EXT,mal
-BGC1000003_m1_to_m2,CC(=O)CC(=O)[S].CC(=O)[S].[H][H]>>CC(=O)CC(O)CC(=O)[S].[SH].O=C=O,False,EXT(mal): +acetyl-S; +H2(KR); +CO2; release [SH],EXT,mal
-BGC1000003_m2_to_m3,CC(=O)CC(O)CC(=O)[S].CC(=O)[S]>>CC(=O)CC(O)CC(=O)CC(=O)[S].[SH].O=C=O,False,EXT(mal): +acetyl-S; +CO2; release [SH],EXT,mal
-BGC1000003_m3_to_m4,CC(=O)CC(O)CC(=O)CC(=O)[S].O>>CC1=C(C(=CC=C1)O)C(=O)O.[SH],False,"CLOSURE: +H2O (reactant), release [SH] (product)",CLOSURE,
-BGC1000004_m0_to_m1,CC(=O)[S].CC(=O)[S]>>CC(=O)CC(=O)[S].[SH].O=C=O,False,EXT(mal): +acetyl-S; +CO2; release [SH],EXT,mal
-BGC1000004_m1_to_m2,CC(=O)CC(=O)[S].CC(=O)[S]>>CC(=O)CC(=O)CC(=O)[S].[SH].O=C=O,False,EXT(mal): +acetyl-S; +CO2; release [SH],EXT,mal
-BGC1000004_m2_to_m3,CC(=O)CC(=O)CC(=O)[S].CC(=O)[S]>>CC(=O)CC(=O)CC(=O)CC(=O)[S].[SH].O=C=O,False,EXT(mal): +acetyl-S; +CO2; release [SH],EXT,mal
-BGC1000004_m3_to_m4,CC(=O)CC(=O)CC(=O)CC(=O)[S].O>>CC1=CC(=CC(=C1C(=O)O)O)O.[SH],False,"CLOSURE: +H2O (reactant), release [SH] (product)",CLOSURE,
-BGC1000005_m0_to_m1,CC(=O)[S].CC(=O)[S]>>CC(=O)CC(=O)[S].[SH].O=C=O,False,EXT(mal): +acetyl-S; +CO2; release [SH],EXT,mal
-BGC1000005_m1_to_m2,CC(=O)CC(=O)[S].CC(=O)[S].[H][H]>>CC(=O)CC(O)CC(=O)[S].[SH].O=C=O,False,EXT(mal): +acetyl-S; +H2(KR); +CO2; release [SH],EXT,mal
-BGC1000005_m2_to_m3,CC(=O)CC(O)CC(=O)[S].CC(=O)[S]>>CC(=O)CC(O)CC(=O)CC(=O)[S].[SH].O=C=O,False,EXT(mal): +acetyl-S; +CO2; release [SH],EXT,mal
-BGC1000005_m3_to_m4,CC(=O)CC(O)CC(=O)CC(=O)[S].O>>CC1=C(C(=CC=C1)O)C(=O)O.[SH],False,"CLOSURE: +H2O (reactant), release [SH] (product)",CLOSURE,
-BGC1000006_m0_to_m1,CC(=O)[S].CC(=O)[S]>>CC(=O)CC(=O)[S].[SH].O=C=O,False,EXT(mal): +acetyl-S; +CO2; release [SH],EXT,mal
-BGC1000006_m1_to_m2,CC(=O)CC(=O)[S].CC(=O)[S].[H][H]>>CC(=O)CC(O)CC(=O)[S].[SH].O=C=O,False,EXT(mal): +acetyl-S; +H2(KR); +CO2; release [SH],EXT,mal
-BGC1000006_m2_to_m3,CC(=O)CC(O)CC(=O)[S].CC(=O)[S]>>CC(=O)CC(O)CC(=O)CC(=O)[S].[SH].O=C=O,False,EXT(mal): +acetyl-S; +CO2; release [SH],EXT,mal
-BGC1000006_m3_to_m4,CC(=O)CC(O)CC(=O)CC(=O)[S].CC(=O)[S].[H][H]>>CC(=O)CC(O)CC(=O)CC(O)CC(=O)[S].[SH].O=C=O,False,EXT(mal): +acetyl-S; +H2(KR); +CO2; release [SH],EXT,mal
-BGC1000006_m4_to_m5,CC(=O)CC(O)CC(=O)CC(O)CC(=O)[S].CC(=O)[S]>>CC(=O)CC(O)CC(=O)CC(O)CC(=O)CC(=O)[S].[SH].O=C=O,False,EXT(mal): +acetyl-S; +CO2; release [SH],EXT,mal
-BGC1000006_m5_to_m6,CC(=O)CC(O)CC(=O)CC(O)CC(=O)CC(=O)[S].O>>CC1=C2C=CC(O)=C(C2=CC=C1)C(=O)O.[SH],False,"CLOSURE: +H2O (reactant), release [SH] (product)",CLOSURE,
-BGC1000007_m0_to_m1,CC(=O)[S].CC(=O)[S]>>CC(=O)CC(=O)[S].[SH].O=C=O,False,EXT(mal): +acetyl-S; +CO2; release [SH],EXT,mal
-BGC1000007_m1_to_m2,CC(=O)CC(=O)[S].CC(=O)[S]>>CC(=O)CC(=O)CC(=O)[S].[SH].O=C=O,False,EXT(mal): +acetyl-S; +CO2; release [SH],EXT,mal
-BGC1000007_m2_to_m3,CC(=O)CC(=O)CC(=O)[S].CC(=O)[S]>>CC(=O)CC(=O)CC(=O)CC(=O)[S].[SH].O=C=O,False,EXT(mal): +acetyl-S; +CO2; release [SH],EXT,mal
-BGC1000007_m3_to_m4,CC(=O)CC(=O)CC(=O)CC(=O)[S].O>>CC1=CC(=CC(=C1C(=O)O)O)O.[SH],False,"CLOSURE: +H2O (reactant), release [SH] (product)",CLOSURE,
+BGC1000000_m0_to_m1,CC(=O)[S].O=C(O)CC(=O)[S]>>CC(=O)CC(=O)[S].[SH].O=C=O,True,EXT(mal): +acetyl-S; +CO2; release [SH],EXT,mal
+BGC1000000_m1_to_m2,CC(=O)CC(=O)[S].O=C(O)CC(=O)[S]>>CC(=O)CC(=O)CC(=O)[S].[SH].O=C=O,True,EXT(mal): +acetyl-S; +CO2; release [SH],EXT,mal
+BGC1000000_m2_to_m3,CC(=O)CC(=O)CC(=O)[S].O=C(O)CC(=O)[S]>>CC(=O)CC(=O)CC(=O)CC(=O)[S].[SH].O=C=O,True,EXT(mal): +acetyl-S; +CO2; release [SH],EXT,mal
+BGC1000000_m3_to_m4,CC(=O)CC(=O)CC(=O)CC(=O)[S].O=C(O)CC(=O)[S]>>CC(=O)CC(=O)CC(=O)CC(=O)CC(=O)[S].[SH].O=C=O,True,EXT(mal): +acetyl-S; +CO2; release [SH],EXT,mal
+BGC1000000_m4_to_m5,CC(=O)CC(=O)CC(=O)CC(=O)CC(=O)[S].O>>CC1=CC2=CC(=CC(=C2C(=O)O1)O)O.[SH].O.O,True,CLOSURE: +H2O (reactant); release [SH] + 2×H2O (cyclization/dehydration),CLOSURE,
+BGC1000001_m0_to_m1,CC(=O)[S].O=C(O)CC(=O)[S].[H][H]>>CC(O)CC(=O)[S].[SH].O=C=O,True,EXT(mal): +acetyl-S; +H2(KR); +CO2; release [SH],EXT,mal
+BGC1000001_m1_to_m2,CC(O)CC(=O)[S].O=C(O)CC(=O)[S]>>CC(O)CC(=O)CC(=O)[S].[SH].O=C=O,True,EXT(mal): +acetyl-S; +CO2; release [SH],EXT,mal
+BGC1000001_m2_to_m3,CC(O)CC(=O)CC(=O)[S].O=C(O)CC(=O)[S].[H][H]>>CC(O)CC(=O)CC(O)CC(=O)[S].[SH].O=C=O,True,EXT(mal): +acetyl-S; +H2(KR); +CO2; release [SH],EXT,mal
+BGC1000001_m3_to_m4,CC(O)CC(=O)CC(O)CC(=O)[S].O=C(O)CC(=O)[S]>>CC(O)CC(=O)CC(O)CC(=O)CC(=O)[S].[SH].O=C=O,True,EXT(mal): +acetyl-S; +CO2; release [SH],EXT,mal
+BGC1000001_m4_to_m5,CC(O)CC(=O)CC(O)CC(=O)CC(=O)[S].O>>C[C@@H]1CC2=C(C(=CC=C2)O)C(=O)O1.[SH].O.O.O,True,CLOSURE: +H2O (reactant); release [SH] + 3×H2O (cyclization/dehydration),CLOSURE,
+BGC1000002_m0_to_m1,CC(=O)[S].O=C(O)CC(=O)[S]>>CC(=O)CC(=O)[S].[SH].O=C=O,True,EXT(mal): +acetyl-S; +CO2; release [SH],EXT,mal
+BGC1000002_m1_to_m2,CC(=O)CC(=O)[S].O=C(O)CC(=O)[S].[H][H]>>CC(=O)CC(O)CC(=O)[S].[SH].O=C=O,True,EXT(mal): +acetyl-S; +H2(KR); +CO2; release [SH],EXT,mal
+BGC1000002_m2_to_m3,CC(=O)CC(O)CC(=O)[S].O=C(O)CC(=O)[S]>>CC(=O)CC(O)CC(=O)CC(=O)[S].[SH].O=C=O,True,EXT(mal): +acetyl-S; +CO2; release [SH],EXT,mal
+BGC1000002_m3_to_m4,CC(=O)CC(O)CC(=O)CC(=O)[S].O=C(O)CC(=O)[S].[H][H]>>CC(=O)CC(O)CC(=O)CC(O)CC(=O)[S].[SH].O=C=O,True,EXT(mal): +acetyl-S; +H2(KR); +CO2; release [SH],EXT,mal
+BGC1000002_m4_to_m5,CC(=O)CC(O)CC(=O)CC(O)CC(=O)[S].O=C(O)CC(=O)[S].[H][H]>>CC(=O)CC(O)CC(=O)CC(O)CC(O)CC(=O)[S].[SH].O=C=O,True,EXT(mal): +acetyl-S; +H2(KR); +CO2; release [SH],EXT,mal
+BGC1000002_m5_to_m6,CC(=O)CC(O)CC(=O)CC(O)CC(O)CC(=O)[S].O>>CC1=C2C=CC=C(C2=CC=C1)C(=O)O.[SH].O.O.O.O.O,True,CLOSURE: +H2O (reactant); release [SH] + 5×H2O (cyclization/dehydration),CLOSURE,
+BGC1000003_m0_to_m1,CC(=O)[S].O=C(O)CC(=O)[S]>>CC(=O)CC(=O)[S].[SH].O=C=O,True,EXT(mal): +acetyl-S; +CO2; release [SH],EXT,mal
+BGC1000003_m1_to_m2,CC(=O)CC(=O)[S].O=C(O)CC(=O)[S].[H][H]>>CC(=O)CC(O)CC(=O)[S].[SH].O=C=O,True,EXT(mal): +acetyl-S; +H2(KR); +CO2; release [SH],EXT,mal
+BGC1000003_m2_to_m3,CC(=O)CC(O)CC(=O)[S].O=C(O)CC(=O)[S]>>CC(=O)CC(O)CC(=O)CC(=O)[S].[SH].O=C=O,True,EXT(mal): +acetyl-S; +CO2; release [SH],EXT,mal
+BGC1000003_m3_to_m4,CC(=O)CC(O)CC(=O)CC(=O)[S].O>>CC1=C(C(=CC=C1)O)C(=O)O.[SH].O.O,True,CLOSURE: +H2O (reactant); release [SH] + 2×H2O (cyclization/dehydration),CLOSURE,
+BGC1000004_m0_to_m1,CC(=O)[S].O=C(O)CC(=O)[S]>>CC(=O)CC(=O)[S].[SH].O=C=O,True,EXT(mal): +acetyl-S; +CO2; release [SH],EXT,mal
+BGC1000004_m1_to_m2,CC(=O)CC(=O)[S].O=C(O)CC(=O)[S]>>CC(=O)CC(=O)CC(=O)[S].[SH].O=C=O,True,EXT(mal): +acetyl-S; +CO2; release [SH],EXT,mal
+BGC1000004_m2_to_m3,CC(=O)CC(=O)CC(=O)[S].O=C(O)CC(=O)[S]>>CC(=O)CC(=O)CC(=O)CC(=O)[S].[SH].O=C=O,True,EXT(mal): +acetyl-S; +CO2; release [SH],EXT,mal
+BGC1000004_m3_to_m4,CC(=O)CC(=O)CC(=O)CC(=O)[S].O>>CC1=CC(=CC(=C1C(=O)O)O)O.[SH].O,True,CLOSURE: +H2O (reactant); release [SH] + 1×H2O (cyclization/dehydration),CLOSURE,
+BGC1000005_m0_to_m1,CC(=O)[S].O=C(O)CC(=O)[S]>>CC(=O)CC(=O)[S].[SH].O=C=O,True,EXT(mal): +acetyl-S; +CO2; release [SH],EXT,mal
+BGC1000005_m1_to_m2,CC(=O)CC(=O)[S].O=C(O)CC(=O)[S].[H][H]>>CC(=O)CC(O)CC(=O)[S].[SH].O=C=O,True,EXT(mal): +acetyl-S; +H2(KR); +CO2; release [SH],EXT,mal
+BGC1000005_m2_to_m3,CC(=O)CC(O)CC(=O)[S].O=C(O)CC(=O)[S]>>CC(=O)CC(O)CC(=O)CC(=O)[S].[SH].O=C=O,True,EXT(mal): +acetyl-S; +CO2; release [SH],EXT,mal
+BGC1000005_m3_to_m4,CC(=O)CC(O)CC(=O)CC(=O)[S].O>>CC1=C(C(=CC=C1)O)C(=O)O.[SH].O.O,True,CLOSURE: +H2O (reactant); release [SH] + 2×H2O (cyclization/dehydration),CLOSURE,
+BGC1000006_m0_to_m1,CC(=O)[S].O=C(O)CC(=O)[S]>>CC(=O)CC(=O)[S].[SH].O=C=O,True,EXT(mal): +acetyl-S; +CO2; release [SH],EXT,mal
+BGC1000006_m1_to_m2,CC(=O)CC(=O)[S].O=C(O)CC(=O)[S].[H][H]>>CC(=O)CC(O)CC(=O)[S].[SH].O=C=O,True,EXT(mal): +acetyl-S; +H2(KR); +CO2; release [SH],EXT,mal
+BGC1000006_m2_to_m3,CC(=O)CC(O)CC(=O)[S].O=C(O)CC(=O)[S]>>CC(=O)CC(O)CC(=O)CC(=O)[S].[SH].O=C=O,True,EXT(mal): +acetyl-S; +CO2; release [SH],EXT,mal
+BGC1000006_m3_to_m4,CC(=O)CC(O)CC(=O)CC(=O)[S].O=C(O)CC(=O)[S].[H][H]>>CC(=O)CC(O)CC(=O)CC(O)CC(=O)[S].[SH].O=C=O,True,EXT(mal): +acetyl-S; +H2(KR); +CO2; release [SH],EXT,mal
+BGC1000006_m4_to_m5,CC(=O)CC(O)CC(=O)CC(O)CC(=O)[S].O=C(O)CC(=O)[S]>>CC(=O)CC(O)CC(=O)CC(O)CC(=O)CC(=O)[S].[SH].O=C=O,True,EXT(mal): +acetyl-S; +CO2; release [SH],EXT,mal
+BGC1000006_m5_to_m6,CC(=O)CC(O)CC(=O)CC(O)CC(=O)CC(=O)[S].O>>CC1=C2C=CC(O)=C(C2=CC=C1)C(=O)O.[SH].O.O.O.O,True,CLOSURE: +H2O (reactant); release [SH] + 4×H2O (cyclization/dehydration),CLOSURE,
+BGC1000007_m0_to_m1,CC(=O)[S].O=C(O)CC(=O)[S]>>CC(=O)CC(=O)[S].[SH].O=C=O,True,EXT(mal): +acetyl-S; +CO2; release [SH],EXT,mal
+BGC1000007_m1_to_m2,CC(=O)CC(=O)[S].O=C(O)CC(=O)[S]>>CC(=O)CC(=O)CC(=O)[S].[SH].O=C=O,True,EXT(mal): +acetyl-S; +CO2; release [SH],EXT,mal
+BGC1000007_m2_to_m3,CC(=O)CC(=O)CC(=O)[S].O=C(O)CC(=O)[S]>>CC(=O)CC(=O)CC(=O)CC(=O)[S].[SH].O=C=O,True,EXT(mal): +acetyl-S; +CO2; release [SH],EXT,mal
+BGC1000007_m3_to_m4,CC(=O)CC(=O)CC(=O)CC(=O)[S].O>>CC1=CC(=CC(=C1C(=O)O)O)O.[SH].O,True,CLOSURE: +H2O (reactant); release [SH] + 1×H2O (cyclization/dehydration),CLOSURE,

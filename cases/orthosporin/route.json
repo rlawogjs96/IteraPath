@@ -57,9 +57,8 @@
     "n_ext": 5,
     "has_kr": true,
     "has_dh": true,
-    "closure_type": "PT_OR_TE",
-    "at_substrate_set": "mal",
-    "hybrid_score": 10.430719176470589
+    "closure_type": "PT_or_TE",
+    "at_substrate_set": "mal"
   },
   "status": "PASS"
 }

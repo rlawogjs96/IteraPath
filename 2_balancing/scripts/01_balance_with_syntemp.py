@@ -38,7 +38,7 @@ OUT_CSV.parent.mkdir(parents=True, exist_ok=True)
 Small molecules turn 1→1 pairs into chemically balanced multi-molecular reactions, so SynTemp's BalanceReactionCheck accepts them. 
 iPKS chemistry consumes / produces co-substrates / products that are not in the minimal pairs. 
 """
-H2   = "[H][H]" #Redudctions
+H2   = "[H][H]" #Reductions
 H2O  = "O" #Dehydration
 CO2  = "O=C=O" #Decarboxylation
 
@@ -47,7 +47,7 @@ CO2  = "O=C=O" #Decarboxylation
 In bacterial aromatic iPKS, malonyl is the canonical extender; decarboxylative Claisen condensation releases CO2; acyl chains are ACP-bound and carriers turnover/release. 
 This is the standard literature model; the code encodes that stoichiometry explicitly for balancing. The small molecules aren’t just for malonyl—H2 and H2O also capture KR/ER and DH stoichiometry systematically.
 """
-MALONYL_THIO = "CC(=O)[S]"
+MALONYL_THIO = "O=C(O)CC(=O)[S]" #이게 문제
 
 def has_token(domstr: str, token: str) -> bool:
     if not isinstance(domstr, str): return False
@@ -67,7 +67,7 @@ def augment_by_step(rs: str, ps: str, step: str, at_substrate: str, domains_norm
     if s == "EXT":
         if at == "mal":
             # BioPKS: malonyl-S abbreviation = CC(=O)[S]; decarboxylation releases CO2
-            r_mix = f"{rs}.CC(=O)[S]" #Reactants: add malonyl thioester. 
+            r_mix = f"{rs}.{MALONYL_THIO}" #Reactants: add malonyl thioester. 
             # If KR co-occurs, consume H2 on reactant side (reductive extension) 
             if kr_here: 
                 r_mix = f"{r_mix}.[H][H]" #Add H2 to reactants (reductive processing). 
@@ -89,20 +89,57 @@ def augment_by_step(rs: str, ps: str, step: str, at_substrate: str, domains_norm
     if s == "KR":
         return f"{rs}.[H][H]", ps, "KR: +H2 (reactant)" #Add H2 to reactants. Hydrogen source often not bound to the chain; modeling H2 balances the net hydrogen uptake at the reaction-graph level, as required by the checker and by SynTemp's hydrogen completeness emphasis. 
 
-    #Dehydration
-    if s == "DH": 
-        return rs, f"{ps}.O", "DH: +H2O (product)" #Add H2O on product side. Explicit water formation balances O/H, consistent with dehydration. 
-
-    #Enoyl Reduction. Enoyl --> Saturated requires reducing equivalents. 
-    #if s == "ER":
-        #return f"{rs}.[H][H]", ps, "ER: +H2 (reactant)" #Add H2 to reactants. Hydrogenation captured as external H2 consumption in the net balance. 
-
-    #iPKS off-loading often via TE-like hydrolysis or ACP/AT-centered schemes; isocoumarin PT introduces an aldol-type ring closure followed by TE-like release. 
+    #CLOSURE/off-loading (final module): calculate H2O from formula difference
     if s == "CLOSURE":
-        # hydrolysis-like: consume H2O + release [SH]
-        return f"{rs}.O", f"{ps}.[SH]", "CLOSURE: +H2O (reactant), release [SH] (product)" #Add H2O to reactants (hydrolysis) and [SH] to products (Carrier fragment released). Captures hydrolytic release and carrier turnover in the overall balance. 
-
+        from rdkit import Chem
+        from rdkit.Chem import rdMolDescriptors
+        import re
+        
+        # Add hydrolysis H2O to reactants, [SH] to products
+        left_trial = f"{rs}.{H2O}"
+        right_trial = f"{ps}.[SH]"
+        
+        # Calculate formula difference
+        mol_l = Chem.MolFromSmiles(left_trial)
+        mol_r = Chem.MolFromSmiles(right_trial)
+        
+        if mol_l and mol_r:
+            formula_l = rdMolDescriptors.CalcMolFormula(mol_l)
+            formula_r = rdMolDescriptors.CalcMolFormula(mol_r)
+            
+            # Parse formulas
+            def parse_formula(f):
+                elements = {}
+                for match in re.finditer(r'([A-Z][a-z]?)(\d*)', f):
+                    elem = match.group(1)
+                    count = int(match.group(2)) if match.group(2) else 1
+                    elements[elem] = elements.get(elem, 0) + count
+                return elements
+            
+            left_elem = parse_formula(formula_l)
+            right_elem = parse_formula(formula_r)
+            
+            # Calculate missing H and O
+            h_diff = left_elem.get('H', 0) - right_elem.get('H', 0)
+            o_diff = left_elem.get('O', 0) - right_elem.get('O', 0)
+            
+            # Each H2O has 2H and 1O
+            # We need h2o_count such that: 2*h2o_count = h_diff AND h2o_count = o_diff
+            if h_diff >= 0 and o_diff >= 0 and h_diff == 2 * o_diff:
+                h2o_count = o_diff
+                water_products = ".".join([H2O] * h2o_count) if h2o_count > 0 else ""
+                right_final = f"{right_trial}.{water_products}" if water_products else right_trial
+                return (
+                    left_trial,
+                    right_final,
+                    f"CLOSURE: +H2O (reactant); release [SH] + {h2o_count}×H2O (cyclization/dehydration)"
+                )
+        
+        # Fallback if calculation fails
+        return f"{rs}.{H2O}", f"{ps}.[SH]", "CLOSURE: +H2O (reactant); release [SH] (formula calc failed)"
+    
     return rs, ps, "OTHER/unknown: no augmentation"
+
 
 def main():
     if not IN_STD.exists():

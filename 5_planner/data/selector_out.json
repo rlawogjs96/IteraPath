@@ -10,9 +10,8 @@
       "n_ext": 5,
       "has_kr": true,
       "has_dh": true,
-      "closure_type": "PT_OR_TE",
-      "at_substrate_set": "mal",
-      "hybrid_score": 10.430719176470589
+      "closure_type": "PT_or_TE",
+      "at_substrate_set": "mal"
     },
     {
       "bgc_id": "BGC1000002",
@@ -23,9 +22,8 @@
       "n_ext": 5,
       "has_kr": true,
       "has_dh": true,
-      "closure_type": "PT_OR_TE",
-      "at_substrate_set": "mal",
-      "hybrid_score": 10.387104164705883
+      "closure_type": "PT_or_TE",
+      "at_substrate_set": "mal"
     },
     {
       "bgc_id": "BGC1000000",
@@ -36,9 +34,8 @@
       "n_ext": 4,
       "has_kr": false,
       "has_dh": true,
-      "closure_type": "PT_OR_TE",
-      "at_substrate_set": "mal",
-      "hybrid_score": 0.6678735647058823
+      "closure_type": "PT_or_TE",
+      "at_substrate_set": "mal"
     },
     {
       "bgc_id": "BGC1000004",
@@ -49,9 +46,8 @@
       "n_ext": 3,
       "has_kr": false,
       "has_dh": false,
-      "closure_type": "PT_OR_TE",
-      "at_substrate_set": "mal",
-      "hybrid_score": 0.42901934117647067
+      "closure_type": "PT_or_TE",
+      "at_substrate_set": "mal"
     },
     {
       "bgc_id": "BGC1000007",
@@ -62,9 +58,8 @@
       "n_ext": 3,
       "has_kr": false,
       "has_dh": false,
-      "closure_type": "PT_OR_TE",
-      "at_substrate_set": "mal",
-      "hybrid_score": 0.42901934117647067
+      "closure_type": "PT_or_TE",
+      "at_substrate_set": "mal"
     },
     {
       "bgc_id": "BGC1000001",
@@ -75,9 +70,8 @@
       "n_ext": 4,
       "has_kr": true,
       "has_dh": true,
-      "closure_type": "PT_OR_TE",
-      "at_substrate_set": "mal",
-      "hybrid_score": 0.4058825529411765
+      "closure_type": "PT_or_TE",
+      "at_substrate_set": "mal"
     },
     {
       "bgc_id": "BGC1000003",
@@ -88,9 +82,8 @@
       "n_ext": 3,
       "has_kr": true,
       "has_dh": false,
-      "closure_type": "PT_OR_TE",
-      "at_substrate_set": "mal",
-      "hybrid_score": 0.34453772941176475
+      "closure_type": "PT_or_TE",
+      "at_substrate_set": "mal"
     },
     {
       "bgc_id": "BGC1000005",
@@ -101,9 +94,8 @@
       "n_ext": 3,
       "has_kr": true,
       "has_dh": true,
-      "closure_type": "PT_OR_TE",
-      "at_substrate_set": "mal",
-      "hybrid_score": 0.34453772941176475
+      "closure_type": "PT_or_TE",
+      "at_substrate_set": "mal"
     }
   ],
   "top1": {
@@ -115,8 +107,7 @@
     "n_ext": 5,
     "has_kr": true,
     "has_dh": true,
-    "closure_type": "PT_OR_TE",
-    "at_substrate_set": "mal",
-    "hybrid_score": 10.430719176470589
+    "closure_type": "PT_or_TE",
+    "at_substrate_set": "mal"
   }
 }
