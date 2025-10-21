@@ -1,0 +1,31 @@
+rule [
+   ruleID "BGC1000002_m4_to_m5__r0"
+   left [
+      edge [ source 14 target 15 label "=" ]
+      edge [ source 14 target 16 label "-" ]
+      edge [ source 17 target 18 label "=" ]
+      edge [ source 18 target 19 label "-" ]
+      edge [ source 18 target 20 label "-" ]
+      edge [ source 20 target 21 label "-" ]
+      node [ id 20 label "C" ]
+   ]
+   context [
+      node [ id 14 label "C" ]
+      node [ id 15 label "O" ]
+      node [ id 16 label "S" ]
+      node [ id 17 label "O" ]
+      node [ id 18 label "C" ]
+      node [ id 19 label "O" ]
+      node [ id 21 label "C" ]
+      edge [ source 14 target 15 label "=" ]
+      edge [ source 14 target 16 label "-" ]
+      edge [ source 17 target 18 label "=" ]
+      edge [ source 18 target 19 label "-" ]
+   ]
+   right [
+      edge [ source 14 target 15 label "-" ]
+      edge [ source 14 target 20 label "-" ]
+      edge [ source 20 target 21 label "=" ]
+      node [ id 20 label "O" ]
+   ]
+]

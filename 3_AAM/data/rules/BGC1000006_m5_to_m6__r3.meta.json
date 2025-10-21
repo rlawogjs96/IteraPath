@@ -1,0 +1,8 @@
+{
+  "reaction_id": "BGC1000006_m5_to_m6",
+  "reactions": "CC(=O)CC(O)CC(=O)CC(O)CC(=O)CC(=O)S.O>>Cc1cccc2c(C(=O)O)c(O)ccc12.O.O.O.O.S",
+  "num_nodes": 20,
+  "num_left_edges": 18,
+  "num_right_edges": 16,
+  "changed_nodes": []
+}
